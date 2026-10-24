@@ -1,115 +1,122 @@
-# Obsidian Typewriter
+# Roman Papyrus (Charta Papyracea Romana)
 
-Typewriter is an [Obsidian](https://www.obsidian.md) October-winning theme with 403k+ downloads designed for a focused writing experience.
+**Roman Papyrus** is an immersive classical theme for [Obsidian](https://obsidian.md), reconstructing the writing surfaces, atramentum inks, and scribal aesthetics of the Roman Empire as recorded by **Pliny the Elder** (*Naturalis Historia* XIII.74–82) and **Isidore of Seville** (*Etymologiae* VI.10).
 
-<a href='https://ko-fi.com/A0A61IFZU4' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi5.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
- 
-If you enjoy the theme, consider buying me a Ko-Fi! It helps keep the project going :)
+Built upon the clean, distraction-free architecture of [Obsidian Typewriter](https://github.com/crashmoney/obsidian-typewriter), Roman Papyrus transforms your vault into a classical Roman tablinum. Write on authentic papyrus sheets (*plagulae*), join them into continuous book scrolls (*volumina*), seal decrees with stamped terracotta bullae, and wield authentic classical typography.
 
-Accessibility issues and bug fixes will be prioritised over new features at this current time. That said, please keep filing feature requests under the '[Issues](https://github.com/crashmoney/obsidian-typewriter/issues)' tab! I still take note of what's there for active development.
+---
 
-![cover](cover.jpg)
+## 🏛️ Archaeological Foundation: Pliny's Six Papyrus Grades
 
-## Features
+Pliny categorized the commercial papyri manufactured in Alexandria and Rome into six distinct quality grades based on pith layer depth, surface levor, candor, and sheet breadth (measured in Roman *digiti*, where 1 digitus &approx; 18.5 mm):
 
-- Careful choice in fonts; monospace in the editor and semi-proportional in preview and UI
-- Fonts have been base64 encoded, meaning you don't need to install them to use Typewriter
-  - This means that the fonts used here are available on mobile
-- Markdown formatting symbols are faded and shrunk, letting you focus on words instead
-- Vim cursor support
-- Long titles in the file explorer will soft-wrap
-  - Useful for mobile and small displays
-- Seamless embeds, without file titles
-- Cool dark mode and warm light mode
-- Compatibility with community plugins (see [Plugin Compatibility](#plugin-compatibility))
-- Compatibility with Obsidian Hub
-- Highlight on the active line for focus
-  - Currently unavailable in v2.0.0 (Obsidian version 0.16.0 onwards)
+| Grade | Roman Width | Surface & Color | Historical Context |
+| :--- | :--- | :--- | :--- |
+| **I. Augusta** | 13 Digiti (~240 mm / 9.5 in) | Superfine, polished ivory pith | Named for Emperor Augustus; prime heart of the Cyperus stalk. Smooth, crispest atramentum ink edges. |
+| **II. Liviana** | 12 Digiti (~220 mm / 8.7 in) | Warm golden ivory | Named for Empress Livia; identical firmness to Augusta with a rich honeyed warmth. |
+| **III. Hieratica / Fanniana** | 9 Digiti (~165 mm / 6.5 in) | Rasped fine, priestly parchment tan | Sacred religious book paper refined in the Roman workshop of grammarian Fannius. |
+| **IV. Saitica** | 7–8 Digiti (~140 mm / 5.5 in) | Marsh scraps, knotty amber | Made from outer delta cuttings around the city of Sais; darker grain with slight ink running. |
+| **V. Taeneotica** | 6 Digiti (~110 mm / 4.3 in) | Coarse outer bark | Sold strictly by bulk weight (*pondere non bonitate*); rough tooth and heavy feathering. |
+| **VI. Emporetica** | <6 Digiti (<100 mm / 3.9 in) | Dark coarse shopkeeper's scrap | Considered "unusable for writing" (*inutilis scribendo*); pasted to wrap merchandise, fish, and spices. |
 
-<!--
-- Multicolored highlights support (achieved through the use of inline color classes)
-  - To use the multicolored highlights, use `<text class=orange>This is some orange text</text>`
-  - See cover image for example (green highlight on "enabled by default")
-  - *Current colors supported: green (light and dark mode), orange (light mode)*
-  - available only in Reading Mode
-- Clean preview without link colors or tags (achieved through YAML header `cssclass: nolink`)
-  - available only in Reading Mode
--->
+---
 
-## Recommended Plugins
+## ✨ Features & Aesthetic System
 
-- [Typewriter Scroll by @death_au](https://github.com/deathau/cm-typewriter-scroll-obsidian) for the full typewriter experience
-  - This plugin comes also with a focus mode, which dims every line except the active one
-- [Click Clack by @Acylation](https://github.com/Acylation/obsidian-click-clack) (still in beta) for typewriter sounds
-- [Style Settings by @mgmeyers](https://github.com/mgmeyers/obsidian-style-settings) for easy customization
+### 1. Document Architecture
+- **Plagula Mode (Default)**: Individual notes are rendered as real Roman papyrus sheets (*plagulae*) with ragged deckle edges, deckle box-shadows, and natural texture floating upon your villa desk.
+- **Volumen Mode**: Continuous scroll roll mode with dark wooden rod margins (*umbilici*) and periodic glued seams (*kolleseis*), simulating an unrolled ancient scroll.
+- **Modern Full Width**: Clean edge-to-edge layout with full papyrus materiality.
 
-## Plugin Compatibility
+### 2. Atramentum Ink Physics
+- **Capillary Reed Bleed**: Natural text-shadow diffusion reproducing ancient carbon and iron gall soot inks (*atramentum librarium*) absorbing into porous plant fibers.
+- Adjustable in **Style Settings** between *Historical Calibration*, *Subtle*, *Heavy Porous Bleed*, or *Crisp Modern*.
 
-*This list is non-exhaustive; other plugins I haven't tested yet may work. The plugins on this list are plugins I've tested or added specific support for.*
+### 3. Recto & Verso Fiber Weave
+- Cross-layered repeating gradients simulate the orthogonal pith strips of the Egyptian reed: horizontal pith strips (*recto*) on the writing surface with vertical backing bundles (*verso*), layered using `mix-blend-mode: multiply`.
 
-- [Calendar by @liamcain](https://github.com/liamcain/obsidian-calendar-plugin)
-- [Kanban by @mgmeyers](https://github.com/mgmeyers/obsidian-kanban)
-- [Sliding Panes (Andy's Mode) by @death_au](https://github.com/deathau/sliding-panes-obsidian)
-- [Tag Wrangler by @pjeby](https://github.com/pjeby/tag-wrangler)
-- [Typewriter Scroll by @death_au](https://github.com/deathau/cm-typewriter-scroll-obsidian)
-- [Better Word Count by @lukeleppan](https://github.com/lukeleppan/better-word-count)
-- [Day Planner by @lynchjames](https://github.com/lynchjames/obsidian-day-planner)
-- [Workbench by @ryanjamurphy](https://github.com/ryanjamurphy/workbench-obsidian)
-- [Citations by @hans](https://github.com/hans/obsidian-citation-plugin)
-- [Journey by @akaalias](https://github.com/akaalias/obsidian-journey-plugin)
-- [Banners by @noatpad](https://github.com/noatpad/obsidian-banners)
-- [Dataview by @blacksmithgu](https://github.com/blacksmithgu/obsidian-dataview)
-- [Style Settings by @mgmeyers](https://github.com/mgmeyers/obsidian-style-settings)
-- [Obsidian TODO by @larslockefeer](https://github.com/larslockefeer/obsidian-plugin-todo)
-- [Obsidian Image Export by @zhouhua](https://github.com/zhouhua/obsidian-export-image)
+### 4. Kollesis Seams
+- Overlapping glued joins (*kolleseis*) where papyrus makers pasted individual sheets together with flour paste and Nile water to construct 20-sheet rolls (*scapi*).
 
-## Development
+### 5. Stamped Terracotta Bulla Seals & Braided Cords
+- Authentic clay seals with 3D inset impressions and twisted hemp fastening cords.
+- Dedicated custom callouts with historical seal stamps:
+  - `> [!decree]` / `> [!edictum]`: Imperial Edict with terracotta `AVG` seal.
+  - `> [!senatus]`: Senatus Consultum with golden bronze `SEN` seal.
+  - `> [!epistula]`: Roman correspondence letter with `LIV` seal.
+  - `> [!legio]`: Military dispatch with iron/terracotta `LEG` seal.
+  - `> [!sacrum]`: Sacred temple scroll with `SAC` seal.
 
-This theme is currently under development. [Issues](https://github.com/crashmoney/obsidian-typewriter/issues) and [pull requests](https://github.com/crashmoney/obsidian-typewrtier/pulls) are welcome.
+### 6. Classical Epigraphy & Scripts
+- **Cinzel & Marcellus**: Monumental inscriptional serifs inspired by first-century Roman capital letters (Trajan's Column).
+- **IM Fell English**: Weathered antique italic type recreating cursive stylus handwriting (*Old Roman Cursive / Currens*).
+- **Interpuncts (`·`)**: Roman word-separator dots with `.interpunct`.
+- **Linea Supera**: Classical overline notation for Roman numerals (e.g. `<span class="linea-supera">XIII</span>` or `X̄ĪĪĪ`).
+- **Drop Caps**: Elegant monumental initial capitals automatically applied to opening paragraphs.
 
-Please see [Releases](https://github.com/crashmoney/obsidian-typewriter/releases) for changes between updates.
+### 7. Dual Atmospheric Palettes
+- **Light Mode — Imperial Atrium**: Warm sunlit travertine stone, polished papyrus desk, and bistre soot ink.
+- **Dark Mode — Candlelit Tablinum & Herculaneum Scrolls**: Archaeological ambient desk (`#25201a`), dark basalt, charred cedar, glowing terracotta bullae, and antique aurum gold.
 
-## Installation
+---
 
-### Recommended (Obsidian Theme Manager)
+## 🎨 Note-Specific Custom Classes (`cssclasses`)
 
-1. Open Settings
-2. Navigate to Appearance
-3. Press the 'Manage' button
-4. Search for Typewriter and press 'Install'
+You can set the papyrus grade, layout, script, or seal on any individual note using frontmatter:
 
-### Manual
+```yaml
+---
+cssclasses:
+  - grade-liviana          # Choose: grade-augusta, grade-liviana, grade-hieratica, grade-saitica, grade-taeneotica, grade-emporetica
+  - plagula                # Choose: plagula (card sheet) or volumen (continuous roll)
+  - roman-cursive          # Choose: roman-cursive (IM Fell English) or roman-monumentalis (Cinzel/Marcellus)
+  - bulla-seal             # Displays stamped terracotta bulla seal & fastening cord at bottom margin
+---
+```
 
-You can also manually install this theme.
+---
 
-For Obsidian version 0.16.0/1.0.0 and above:
+## ⚙️ Obsidian Style Settings
 
-1. Download `theme.css` and `manifest.json`
-2. In your vault's hidden theme directory (`.obsidian/themes/`), create a `Typewriter/` directory
-3. Move `theme.css` and `manifest.json` into the `.obsidian/themes/Typewriter` folder
+Install the **Style Settings** plugin by `@mgmeyers` to unlock in-app configuration:
 
-For Obsidian version 0.15.9 and below:
+- **Pliny's Papyrus Grade**: Switch the global default across all 6 historical grades.
+- **Document Display Mode**: Toggle between *Plagula Sheet*, *Volumen Scroll*, or *Modern Full Width*.
+- **Fiber Weave Striations**: Toggle cross-layered cyperus pith fibers on or off.
+- **Kollesis Glue Seams**: Toggle joined plagulae overlap seams.
+- **Atramentum Capillary Bleed**: Choose between *Historical Calibration*, *Subtle*, *Heavy*, or *Disabled*.
+- **Bulla Seals**: Enable or disable terracotta bulla stamps.
+- **Markdown Formatting**: Shrink and fade markdown symbols for focused reading.
+- **Active Line Highlight**: Warm amber focus wash.
 
-1. Download `obsidian.css`
-    - Please note that `obsidian.css` has been deprecated. Development will focus more on `theme.css`.
-2. Rename the file to `Typewriter.css`
-3. Move the file to your vault's theme directory
-    - Navigate to your vault's hidden `.obsidian/themes` folder
-    - Place `Typewriter.css` inside that folder
+---
 
-## Credits
+## 📦 Installation
 
-Inspiration and/or some code were taken from the following:
+### Recommended (Theme Manager)
+1. Open Obsidian **Settings** &rarr; **Appearance** &rarr; **Themes** &rarr; **Manage**.
+2. Search for **Roman Papyrus** and click **Install and apply**.
 
-- [Minimal by @kepano](https://github.com/kepano/obsidian-minimal)
-- [Yin and Yang by @chetachiezikeuzor](https://github.com/chetachiezikeuzor/Yin-and-Yang-Theme)
-- [Deep Work by @nikbrunner](https://github.com/nikbrunner/obsidian-deep-work-theme)
-- the Scrivener theme A Midsummer Night for the colors behind Typewriter's dark mode
-- Solarized Light for the colors behind Typewriter's light mode
+### Manual Installation
+1. Download `theme.css` and `manifest.json`.
+2. In your Obsidian vault, navigate to `.obsidian/themes/`.
+3. Create a folder named `Roman Papyrus/`.
+4. Move `theme.css` and `manifest.json` into `.obsidian/themes/Roman Papyrus/`.
+5. In Obsidian, go to **Settings** &rarr; **Appearance** &rarr; **Themes** and select **Roman Papyrus**.
 
-### Fonts
+---
 
-This theme uses the fonts iA Writer Mono V, iA Writer Quattro S and JetBrains Mono. These fonts have been base64 encoded into the theme CSS, meaning that you don't have to install them and that they are available on mobile. If you want to, however, the links are below:
+## 📜 Credits & Attributions
 
-- [iA Writer Fonts (GitHub)](https://github.com/iaolo/iA-Fonts)
-- [JetBrains Mono (Google Fonts)](https://fonts.google.com/specimen/JetBrains+Mono#standard-styles)
+- Built upon the excellent [Obsidian Typewriter](https://github.com/crashmoney/obsidian-typewriter) by **crashmoney**.
+- Historical research and calibration based on **Pliny the Elder**, *Naturalis Historia* (Liber XIII, 74–82: *De papyro et chartis*) and **Isidore of Seville**, *Etymologiarum sive Originum* (Liber VI, 10).
+- Fonts:
+  - [Cinzel](https://fonts.google.com/specimen/Cinzel) by Natanael Gama
+  - [Marcellus](https://fonts.google.com/specimen/Marcellus) by Astigmatic
+  - [IM Fell English](https://fonts.google.com/specimen/IM+Fell+English) by Igino Marini
+  - Embedded iA Writer Mono V, Quattro S, and JetBrains Mono from Typewriter
+- Checkbox icons adapted from Minimal by **@kepano**.
+
+---
+
+*C. Plinius Secundus: "Papyri natura dicetur, cum chartae usu maxime humanitas vitae constet, certe memoria."*

@@ -1,21 +1,34 @@
 /* -------- FRONT MATTER ---------
-** Theme: Obsidian Typewriter
-** Version number: 2.1.9
-** GitHub Repo: https://github.com/crashmoney/obsidian-typewriter
-** Made by: crashmoney
+** Theme: Roman Papyrus (Charta Papyracea Romana)
+** Version number: 1.0.0
+** GitHub Repo: https://github.com/gavmor/obsidian-roman-papyrus-theme
+** Original template by: crashmoney (Obsidian Typewriter)
+** Roman Papyrus enhancements by: gavmor
+** Based on: Pliny the Elder (Naturalis Historia XIII.74–82) & Isidore (Etymologiae VI.10)
 ----------------------------------- */
 
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=IM+Fell+English:ital@0;1&family=Marcellus&display=swap');
+
 /* +++ TOC
-|_ FONT FACES
-|_ COLOR VARIABLES
-|_ LIGHT MODE
-|_ DARK MODE
-|_ TYPOGRAPHY & FONTS
-|_ UI ELEMENTS
-|_ PLUGINS
-|_ STYLE SETTINGS
+|_ FONT FACES & CLASSICAL TYPOGRAPHY
+|_ ROMAN PAPYRUS CORE VARIABLES & PLINY'S SIX GRADES
+|_ LIGHT THEME (IMPERIAL ATRIUM & PAPYRUS DESK)
+|_ DARK THEME (CANDLELIT TABLINUM & HERCULANEUM SCROLLS)
+|_ PLINY'S SIX HISTORICAL GRADES (CSS CLASSES & TOKENS)
+|_ DOCUMENT LAYOUT ARCHITECTURE (PLAGULA SHEETS & VOLUMEN ROLLS)
+|_ FIBER WEAVE LAYERING (RECTO & VERSO PITH STRIPS)
+|_ KOLLESIS (GLUED SEAMS BETWEEN PLAGULA SHEETS)
+|_ ATRAMENTUM INK BLEED & CAPILLARY FEATHERING
+|_ BULLA SEALS & BRAIDED FASTENING CORDS
+|_ CLASSICAL SCRIPTS (CURSIVE, MONUMENTALIS, SCRIPTIO CONTINUA)
+|_ ROMAN INTERPUNCTS & LINEA SUPERA
+|_ CALLOUTS & IMPERIAL DECREES
+|_ WAX TABLET CHECKBOXES
+|_ UI COMPONENTS (TABS, SIDEBARS, MODALS, SCROLLBARS)
+|_ STYLE SETTINGS CONFIGURATION
 |_ OBSIDIAN HUB
 */
+
 
 /* +++ FONT FACES {{{ */
 
@@ -77,249 +90,556 @@
 
 /* }}} */
 
-/* +++ COLOR VARIABLES {{{ */
-body {
-  --base-h: 0;
-  --base-s: 0%;
-  --base-d: 15%; /* base lightness for dark mode. 0 is black */
-  --base-l: 96%; /* base lightness for light mode. 100 is white */
 
-  /* Get accent from Style settings, defaults to rgb: 81, 157, 92 for both dark and light themes */
-  --theme-accent-h: var(--accent-h, 129);
-  --theme-accent-s: var(--accent-s, 31.9%);
-  --theme-accent-l: var(--accent-l, 46.7%);
+/* +++ ROMAN PAPYRUS CORE VARIABLES & PLINY'S SIX GRADES {{{ */
+:root {
+  /* Classical Roman Ink Pigments (Atramentum) */
+  --ink-augusta: rgba(26, 20, 16, 0.94);
+  --ink-liviana: rgba(28, 22, 17, 0.94);
+  --ink-hieratica: rgba(30, 24, 18, 0.93);
+  --ink-saitica: rgba(35, 26, 18, 0.92);
+  --ink-taeneotica: rgba(40, 28, 16, 0.92);
+  --ink-emporetica: rgba(45, 30, 16, 0.95);
 
-  /* WIP - working with relative HSL values
-  --theme-accent-h: calc(var(--accent-h) - 125);
-  --theme-accent-d: calc(var(--accent-d) - 21.3%);
-  --theme-accent-l: calc(var(--accent-l) - 21.3%);
-  --theme-accent-s: calc(var(--accent-s) - 48.1%);
-  */
+  /* Roman Seal, Metal & Mineral Pigments */
+  --bulla-terracotta: #8c3b24;
+  --bulla-terracotta-bright: #b25333;
+  --bulla-shadow: #3b140b;
+  --roman-gold: #c59b27;
+  --roman-gold-bright: #dfb743;
+  --roman-gold-dim: #7a591a;
+  --roman-purple: #631a31;
+  --roman-purple-bright: #842342;
+  --roman-cinnabar: #a83222;
+  --roman-cinnabar-bright: #c8402c;
+  --roman-malachite: #2e6347;
+  --roman-lapis: #264e70;
+  --roman-bistre: #2d2015;
+
+  /* Standard Ink Bleed blur radius */
+  --ink-shadow-blur: 0.35px;
+  --ink-shadow: 0 0 var(--ink-shadow-blur) rgba(20, 14, 8, 0.6);
+
+  /* SVG displacement filters data URIs for ragged edge and reed fiber capillary distortion */
+  --filter-papyrus-tear: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='papyrus-tear-filter' x='-10%25' y='-10%25' width='120%25' height='120%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.045 0.08' numOctaves='4' result='noise'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='noise' scale='6' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3C/svg%3E#papyrus-tear-filter");
+  --filter-ink-capillary: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='ink-capillary-filter' x='-10%25' y='-10%25' width='120%25' height='120%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.05 0.15' numOctaves='3' result='fiberNoise'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='fiberNoise' scale='1.2' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3C/svg%3E#ink-capillary-filter");
+
+  /* 1. AUGUSTA: 13 Digiti (~240mm), Fine, White, Polished Ivory Pith */
+  --bg-grade-augusta: 
+    radial-gradient(ellipse at 80% 20%, rgba(255, 250, 240, 0.5) 0%, transparent 60%),
+    repeating-linear-gradient(90deg, 
+      rgba(224, 212, 188, 0.42) 0px, 
+      rgba(215, 201, 175, 0.35) 1px, 
+      rgba(238, 228, 208, 0.3) 2px, 
+      rgba(230, 218, 195, 0.45) 4px
+    ),
+    repeating-linear-gradient(0deg, 
+      rgba(247, 240, 228, 0.6) 0px, 
+      rgba(229, 217, 197, 0.5) 1.5px, 
+      rgba(242, 233, 219, 0.75) 4px
+    ),
+    #f5ede0;
+
+  /* 2. LIVIANA: 12 Digiti (~220mm), Golden Ivory, Imperial Quality */
+  --bg-grade-liviana: 
+    radial-gradient(ellipse at 20% 70%, rgba(200, 165, 110, 0.12) 0%, transparent 55%),
+    repeating-linear-gradient(90deg, 
+      rgba(215, 196, 162, 0.5) 0px, 
+      rgba(198, 178, 140, 0.4) 1px, 
+      transparent 3px
+    ),
+    repeating-linear-gradient(0deg, 
+      rgba(235, 215, 182, 0.6) 0px, 
+      rgba(218, 198, 160, 0.55) 2px, 
+      transparent 4px
+    ),
+    #ebd8b8;
+
+  /* 3. HIERATICA / FANNIANA: 9 Digiti (~165mm), Thin, Religious & Book Grade */
+  --bg-grade-hieratica: 
+    radial-gradient(circle at 60% 40%, rgba(140, 95, 45, 0.1) 0%, transparent 60%),
+    repeating-linear-gradient(90deg, 
+      rgba(195, 170, 130, 0.4) 0px, 
+      transparent 2px, 
+      rgba(178, 152, 112, 0.4) 4px
+    ),
+    repeating-linear-gradient(0deg, 
+      rgba(225, 200, 160, 0.75) 0px, 
+      rgba(195, 165, 125, 0.6) 1.5px, 
+      transparent 3px
+    ),
+    #dfcaa4;
+
+  /* 4. SAITICA: 7-8 Digiti (~140mm), Nile Marsh Scraps, Knotty & Darker */
+  --bg-grade-saitica: 
+    radial-gradient(ellipse at 40% 60%, rgba(130, 85, 40, 0.18) 0%, transparent 60%),
+    repeating-linear-gradient(90deg, 
+      rgba(175, 140, 100, 0.6) 0px, 
+      rgba(150, 115, 75, 0.45) 2px, 
+      transparent 5px
+    ),
+    repeating-linear-gradient(0deg, 
+      rgba(205, 175, 130, 0.75) 0px, 
+      rgba(165, 130, 88, 0.65) 2px, 
+      transparent 4px
+    ),
+    #cfb186;
+
+  /* 5. TAENEOTICA: 6 Digiti (~110mm), Sold by Weight, Coarse Outer Bark */
+  --bg-grade-taeneotica: 
+    radial-gradient(circle at 75% 20%, rgba(95, 55, 15, 0.22) 0%, transparent 50%),
+    radial-gradient(circle at 20% 80%, rgba(85, 45, 10, 0.2) 0%, transparent 45%),
+    repeating-linear-gradient(90deg, 
+      rgba(145, 108, 68, 0.7) 0px, 
+      rgba(115, 78, 40, 0.55) 2px, 
+      transparent 4px
+    ),
+    repeating-linear-gradient(0deg, 
+      rgba(180, 142, 98, 0.75) 0px, 
+      rgba(135, 92, 52, 0.65) 3px, 
+      transparent 6px
+    ),
+    #bfa072;
+
+  /* 6. EMPORETICA: <6 Digiti (<100mm), Merchant Wrapping Scrap */
+  --bg-grade-emporetica: 
+    radial-gradient(circle at 50% 50%, rgba(70, 40, 12, 0.3) 0%, transparent 60%),
+    repeating-linear-gradient(90deg, 
+      rgba(110, 75, 42, 0.8) 0px, 
+      rgba(80, 50, 24, 0.75) 2px, 
+      transparent 3px
+    ),
+    repeating-linear-gradient(0deg, 
+      rgba(150, 110, 68, 0.85) 0px, 
+      rgba(100, 68, 36, 0.8) 3px, 
+      transparent 5px
+    ),
+    #9e7b4e;
+
+  /* Active Papyrus Texture (Default: Augusta) */
+  --papyrus-bg-active: var(--bg-grade-augusta);
+  --papyrus-ink-active: var(--ink-augusta);
+  --papyrus-sheet-width: 240mm;
+
+  /* Kollesis (glued seam) overlay */
+  --kollesis-gradient: linear-gradient(to right,
+    transparent 0%,
+    rgba(70, 45, 18, 0.16) 35%,
+    rgba(45, 25, 8, 0.28) 50%,
+    transparent 100%
+  );
+
+  /* Fastening cord */
+  --cord-gradient: repeating-linear-gradient(45deg,
+    #a89070,
+    #a89070 3px,
+    #6d5538 3px,
+    #6d5538 6px
+  );
 }
 
-/* +++ LIGHT MODE {{{ */
+/* Base Theme Hue / Saturation overrides */
+body {
+  --base-h: 38;
+  --base-s: 25%;
+  --base-d: 12%;
+  --base-l: 92%;
+
+  --theme-accent-h: 13;
+  --theme-accent-s: 59%;
+  --theme-accent-l: 35%;
+
+  --color-accent: var(--bulla-terracotta);
+  --color-accent-2: var(--bulla-terracotta-bright);
+}
+/* }}} */
+
+/* +++ LIGHT THEME (IMPERIAL ATRIUM & PAPYRUS DESK) {{{ */
 .theme-light {
-  --background-primary: hsl(
-    calc(var(--base-h) + 44),
-    calc(var(--base-s) + 79%),
-    calc(var(--base-l) - 2%)
-  );
-  --background-primary-alt: #fcf5e4;
-  --background-secondary: hsl(
-    calc(var(--base-h) + 42),
-    calc(var(--base-s) + 34%),
-    calc(var(--base-l) - 12%)
-  );
-  --background-secondary-alt: #fcf5e4;
-  --background-transparent: hsla(
-    var(--base-h),
-    var(--base-s),
-    var(--base-l),
-    0
-  );
-  --background-translucent: rgba(255, 255, 255, 0.85);
-  --background-modifier-border: hsl(
-    var(--base-h),
-    var(--base-s),
-    calc(var(--base-l) - 6%)
-  );
-  --background-modifier-border-hover: hsl(
-    var(--base-h),
-    var(--base-s),
-    calc(var(--base-l) - 12%)
-  );
-  --background-modifier-border-focus: hsl(
-    var(--base-h),
-    var(--base-s),
-    calc(var(--base-l) - 20%)
-  );
-  --background-modifier-form-field: hsl(
-    var(--base-h),
-    var(--base-s),
-    calc(var(--base-l) + 6%)
-  );
-  --background-modifier-form-field-highlighted: hsl(
-    var(--base-h),
-    var(--base-s),
-    calc(var(--base-l) + 8%)
-  );
+  --background-primary: var(--papyrus-bg-active);
+  --background-primary-alt: #f0e6d6;
+  --background-secondary: #e6dcce;
+  --background-secondary-alt: #dfd4c3;
+  --background-transparent: rgba(245, 237, 224, 0);
+  --background-translucent: rgba(245, 237, 224, 0.85);
 
-  --color-accent: hsl(
-    var(--theme-accent-h),
-    var(--theme-accent-s),
-    var(--theme-accent-l)
-  );
-  --background-modifier-accent: hsl(
-    var(--theme-accent-h),
-    var(--theme-accent-s),
-    calc(var(--theme-accent-l) + 10%)
-  );
-  --vim-cursor: hsla(
-    var(--theme-accent-h),
-    var(--theme-accent-s),
-    var(--theme-accent-l),
-    0.8
-  );
-  --text-accent: hsl(
-    var(--theme-accent-h),
-    var(--theme-accent-s),
-    var(--theme-accent-l)
-  );
-  --text-accent-hover: hsl(
-    var(--theme-accent-h),
-    var(--theme-accent-s),
-    calc(var(--theme-accent-l) - 10%)
-  );
-  --text-normal: hsl(var(--base-h), var(--base-s), var(--base-d));
-  --text-muted: hsl(var(--base-h), var(--base-s), calc(var(--base-d) + 20%));
-  --text-faint: hsl(var(--base-h), var(--base-s), calc(var(--base-d) + 47%));
+  --background-modifier-border: #d2c3ae;
+  --background-modifier-border-hover: #bda890;
+  --background-modifier-border-focus: var(--bulla-terracotta);
+  --background-modifier-form-field: #fdf9f2;
+  --background-modifier-form-field-highlighted: #ffffff;
 
-  --text-highlight-bg: hsla(53, 100%, 50%, 0.5);
-  --text-highlight-bg-active: rgba(255, 128, 0, 0.4);
-  --text-selection: rgba(204, 230, 255, 0.99);
-  --text-on-accent: #f2f2f2;
+  --color-accent: var(--bulla-terracotta);
+  --background-modifier-accent: rgba(140, 59, 36, 0.12);
+  --vim-cursor: rgba(140, 59, 36, 0.75);
+  --text-accent: var(--bulla-terracotta);
+  --text-accent-hover: var(--bulla-terracotta-bright);
 
-  --interactive-normal: #f2f3f5;
-  --interactive-hover: #e9e9e9;
-  --interactive-accent: hsl(
-    var(--theme-accent-h),
-    var(--theme-accent-s),
-    calc(var(--theme-accent-l) + 10%)
-  );
-  --interactive-accent-hover: hsl(
-    var(--theme-accent-h),
-    var(--theme-accent-s),
-    calc(var(--theme-accent-l) - 0%)
-  );
-  --interactive-accent-rgb: 123, 108, 217;
-  --interactive-success: #197300;
+  --text-normal: var(--papyrus-ink-active);
+  --text-muted: #5e4c3a;
+  --text-faint: #8a7662;
 
-  --scrollbar-active-thumb-bg: rgba(0, 0, 0, 0.2);
-  --scrollbar-bg: rgba(0, 0, 0, 0.05);
-  --scrollbar-thumb-bg: rgba(0, 0, 0, 0.1);
-  --highlight-mix-blend-mode: darken;
+  --text-highlight-bg: rgba(223, 183, 67, 0.4);
+  --text-highlight-bg-active: rgba(178, 83, 51, 0.35);
+  --text-selection: rgba(212, 175, 55, 0.28);
+  --text-on-accent: #fdfaf4;
+
+  --interactive-normal: #ede3d5;
+  --interactive-hover: #e3d6c5;
+  --interactive-accent: var(--bulla-terracotta);
+  --interactive-accent-hover: var(--bulla-terracotta-bright);
+  --interactive-success: #2e6347;
+
+  --scrollbar-active-thumb-bg: #5c4735;
+  --scrollbar-bg: rgba(70, 45, 20, 0.08);
+  --scrollbar-thumb-bg: #826c58;
+  --highlight-mix-blend-mode: multiply;
 
   --icon-color: var(--text-muted);
-  --icon-hex: 000;
+  --icon-hex: 3b2a1a;
+  --graph-line-color: #baa994;
+  --code-background: #e8dcce;
+  --code-normal: #7a2b16;
 
-  --graph-line-color: #c0c9ce;
-  
-  --code-background: #eee8d5;
+  --divider-color: #cbb9a3;
+  --tab-outline-color: #d8cabd;
 }
 /* }}} */
 
-/* +++ DARK MODE {{{ */
+/* +++ DARK THEME (CANDLELIT TABLINUM & HERCULANEUM SCROLLS) {{{ */
 .theme-dark {
-  --background-primary: hsl(var(--base-h), var(--base-s), var(--base-d));
-  --background-primary-alt: #202020;
-  --background-secondary: hsl(
-    calc(var(--base-h) + 30),
-    calc(var(--base-s) + 11.5%),
-    calc(var(--base-l) - 75.6%)
-  );
-  --background-secondary-alt: #000000;
-  --background-modifier-border: #333;
-  --background-modifier-border-hover: rgb(94, 94, 94);
-  --background-modifier-border-focus: hsl(
-    var(--base-h),
-    var(--base-s),
-    calc(var(--base-l) - 60%)
-  );
-  --background-modifier-accent: hsl(
-    var(--accent-h),
-    var(--accent-s),
-    var(--accent-d)
-  );
-  --background-modifier-form-field: rgba(0, 0, 0, 0.3);
-  --background-modifier-form-field-highlighted: rgba(0, 0, 0, 0.22);
-  --background-modifier-box-shadow: rgba(0, 0, 0, 0.3);
-  --background-modifier-success: #197300;
-  --background-modifier-error: #3d0000;
-  --background-modifier-error-rgb: 61, 0, 0;
-  --background-modifier-error-hover: #470000;
-  --background-modifier-cover: rgba(0, 0, 0, 0.8);
+  --background-primary: radial-gradient(circle at 50% 25%, #25201a 0%, #171410 100%);
+  --background-primary-alt: #1f1b16;
+  --background-secondary: #181511;
+  --background-secondary-alt: #110e0a;
+  --background-transparent: rgba(23, 20, 16, 0);
+  --background-translucent: rgba(26, 22, 17, 0.88);
 
-  --vim-cursor: hsla(
-    var(--theme-accent-h),
-    var(--theme-accent-s),
-    var(--theme-accent-l),
-    0.8
-  );
-  --color-accent: hsl(
-    var(--theme-accent-h),
-    var(--theme-accent-s),
-    var(--theme-accent-l)
-  );
-  --text-accent-hover: hsl(
-    var(--theme-accent-h),
-    var(--theme-accent-s),
-    calc(var(--theme-accent-l) - 10%)
-  );
-  --text-normal: rgb(197, 184, 161);
-  --text-muted: hsl(var(--base-h), var(--base-s), calc(var(--base-d) + 45%));
-  --text-faint: hsl(var(--base-h), var(--base-s), calc(var(--base-d) + 47%));
-  --text-error: rgb(230,60,60);
-  --text-error-hover: #990000;
+  --background-modifier-border: #3b3228;
+  --background-modifier-border-hover: #574a3b;
+  --background-modifier-border-focus: var(--roman-gold-bright);
+  --background-modifier-form-field: #221d17;
+  --background-modifier-form-field-highlighted: #2c251e;
 
-  --text-highlight-bg: rgba(255, 177, 80, 0.3);
-  --text-highlight-bg-active: rgba(255, 128, 0, 0.4);
-  --text-selection: rgba(23, 48, 77, 0.99);
-  --text-on-accent: #dcddde;
-  --interactive-normal: #2a2a2a;
-  --interactive-hover: #303030;
-  --interactive-accent: hsl(
-    var(--theme-accent-h),
-    var(--theme-accent-s),
-    calc(var(--theme-accent-l) + 10%)
-  );
-  --interactive-accent-hover: hsl(
-    var(--theme-accent-h),
-    var(--theme-accent-s),
-    calc(var(--theme-accent-l) - 0%)
-  );
-  --interactive-accent-rgb: 72, 54, 153;
-  --interactive-success: #197300;
-  --scrollbar-active-thumb-bg: rgba(255, 255, 255, 0.2);
-  --scrollbar-bg: rgba(255, 255, 255, 0.05);
-  --scrollbar-thumb-bg: rgba(255, 255, 255, 0.1);
-  --highlight-mix-blend-mode: lighten;
+  --color-accent: var(--bulla-terracotta-bright);
+  --background-modifier-accent: rgba(178, 83, 51, 0.22);
+  --vim-cursor: rgba(223, 183, 67, 0.8);
+  --text-accent: var(--roman-gold-bright);
+  --text-accent-hover: #f0cb67;
 
-  --graph-line-color: #6f7577;
+  --text-normal: #e6dfd5;
+  --text-muted: #b8aba0;
+  --text-faint: #7d7266;
+
+  --text-highlight-bg: rgba(223, 183, 67, 0.28);
+  --text-highlight-bg-active: rgba(178, 83, 51, 0.45);
+  --text-selection: rgba(197, 155, 39, 0.35);
+  --text-on-accent: #ffffff;
+
+  --interactive-normal: #2a241d;
+  --interactive-hover: #383027;
+  --interactive-accent: var(--bulla-terracotta-bright);
+  --interactive-accent-hover: #c45f3e;
+  --interactive-success: #438863;
+
+  --scrollbar-active-thumb-bg: #8c735a;
+  --scrollbar-bg: #1d1a16;
+  --scrollbar-thumb-bg: #544434;
+  --highlight-mix-blend-mode: screen;
+
+  --icon-color: var(--text-muted);
+  --icon-hex: dcd2c3;
+  --graph-line-color: #4a4034;
+  --code-background: #1e1913;
+  --code-normal: #e28468;
+
+  --divider-color: #3f362a;
+  --tab-outline-color: #352d23;
 }
 /* }}} */
 
+/* +++ PLINY'S SIX HISTORICAL GRADES (CSS CLASSES & TOKENS) {{{ */
+/* 1. Augusta */
+body.grade-augusta, .grade-augusta {
+  --papyrus-bg-active: var(--bg-grade-augusta) !important;
+  --papyrus-ink-active: var(--ink-augusta) !important;
+  --ink-shadow: 0 0 0.25px rgba(20, 14, 8, 0.55) !important;
+  --papyrus-sheet-width: 240mm !important;
+}
+
+/* 2. Liviana */
+body.grade-liviana, .grade-liviana {
+  --papyrus-bg-active: var(--bg-grade-liviana) !important;
+  --papyrus-ink-active: var(--ink-liviana) !important;
+  --ink-shadow: 0 0 0.4px rgba(22, 16, 9, 0.6) !important;
+  --papyrus-sheet-width: 220mm !important;
+}
+
+/* 3. Hieratica */
+body.grade-hieratica, .grade-hieratica {
+  --papyrus-bg-active: var(--bg-grade-hieratica) !important;
+  --papyrus-ink-active: var(--ink-hieratica) !important;
+  --ink-shadow: 0 0 0.65px rgba(25, 18, 10, 0.65) !important;
+  --papyrus-sheet-width: 165mm !important;
+}
+
+/* 4. Saitica */
+body.grade-saitica, .grade-saitica {
+  --papyrus-bg-active: var(--bg-grade-saitica) !important;
+  --papyrus-ink-active: var(--ink-saitica) !important;
+  --ink-shadow: 0 0 1.05px rgba(28, 20, 11, 0.72) !important;
+  --papyrus-sheet-width: 140mm !important;
+}
+
+/* 5. Taeneotica */
+body.grade-taeneotica, .grade-taeneotica {
+  --papyrus-bg-active: var(--bg-grade-taeneotica) !important;
+  --papyrus-ink-active: var(--ink-taeneotica) !important;
+  --ink-shadow: 0 0 1.55px rgba(32, 22, 12, 0.8) !important;
+  --papyrus-sheet-width: 110mm !important;
+}
+
+/* 6. Emporetica */
+body.grade-emporetica, .grade-emporetica {
+  --papyrus-bg-active: var(--bg-grade-emporetica) !important;
+  --papyrus-ink-active: var(--ink-emporetica) !important;
+  --ink-shadow: 0 0 2.2px rgba(35, 24, 12, 0.95) !important;
+  --papyrus-sheet-width: 100mm !important;
+}
 /* }}} */
 
-/* +++ TYPOGRAPHY & FONTS {{{ */
+/* +++ DOCUMENT LAYOUT ARCHITECTURE (PLAGULA SHEETS & VOLUMEN ROLLS) {{{ */
+
+/* 1. PLAGULA MODE (Bounded Papyrus Sheet on Roman Desk) */
+body.papyrus-mode-plagula .markdown-source-view.mod-cm6 .cm-scroller,
+body.papyrus-mode-plagula .markdown-preview-view,
+.plagula .markdown-source-view.mod-cm6 .cm-scroller,
+.plagula .markdown-preview-view {
+  background: transparent !important;
+}
+
+body.papyrus-mode-plagula .workspace-leaf-content[data-type="markdown"] .view-content,
+.plagula .workspace-leaf-content[data-type="markdown"] .view-content {
+  background: var(--background-secondary) !important;
+}
+
+body.papyrus-mode-plagula .markdown-source-view.mod-cm6 .cm-sizer,
+body.papyrus-mode-plagula .markdown-preview-view .markdown-rendered,
+.plagula .markdown-source-view.mod-cm6 .cm-sizer,
+.plagula .markdown-preview-view .markdown-rendered {
+  background: var(--papyrus-bg-active) !important;
+  max-width: var(--papyrus-sheet-width, 240mm) !important;
+  margin: 28px auto !important;
+  padding: 38px 52px !important;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.25) !important;
+  border-radius: 2px 4px 3px 5px / 4px 2px 5px 3px !important;
+  position: relative !important;
+  border: 1px solid rgba(80, 50, 20, 0.14) !important;
+  transition: max-width 0.3s ease, background 0.3s ease;
+}
+
+/* Ragged Deckle Edge Effect via drop-shadow and border-radius */
+.papyrus-wrapper,
+body.papyrus-deckle-edges .markdown-source-view.mod-cm6 .cm-sizer,
+body.papyrus-deckle-edges .markdown-preview-view .markdown-rendered {
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.55));
+  border-radius: 4px 2px 5px 3px / 2px 5px 3px 4px;
+}
+
+/* 2. VOLUMEN MODE (Continuous Scroll Roll with Wooden Umbilicus Rod Margins) */
+body.papyrus-mode-volumen .markdown-source-view.mod-cm6 .cm-sizer,
+body.papyrus-mode-volumen .markdown-preview-view .markdown-rendered,
+.volumen .markdown-source-view.mod-cm6 .cm-sizer,
+.volumen .markdown-preview-view .markdown-rendered {
+  background: var(--papyrus-bg-active) !important;
+  border-left: 14px solid #4a3622 !important;
+  border-right: 14px solid #4a3622 !important;
+  box-shadow: inset 12px 0 24px rgba(0, 0, 0, 0.4), inset -12px 0 24px rgba(0, 0, 0, 0.4) !important;
+  padding-left: 48px !important;
+  padding-right: 48px !important;
+  position: relative !important;
+}
+
+/* Kollesis (glued seam) overlay on note sheets */
+.kollesis-seam::after,
+body.papyrus-kollesis-seams .markdown-preview-view .markdown-rendered::after,
+body.papyrus-kollesis-seams .markdown-source-view.mod-cm6 .cm-sizer::after {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0; right: 28px;
+  width: 18px;
+  background: var(--kollesis-gradient);
+  pointer-events: none;
+  z-index: 5;
+}
+/* }}} */
+
+/* +++ FIBER WEAVE LAYERING (RECTO & VERSO PITH STRIPS) {{{ */
+body.papyrus-fibers-on .markdown-source-view.mod-cm6 .cm-sizer::before,
+body.papyrus-fibers-on .markdown-preview-view .markdown-rendered::before,
+.papyrus-fibers::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: 
+    repeating-linear-gradient(0deg, 
+      rgba(255, 255, 255, 0.04) 0px, 
+      transparent 1.5px, 
+      rgba(60, 30, 10, 0.05) 3px
+    ),
+    repeating-linear-gradient(90deg, 
+      transparent 0px, 
+      rgba(40, 20, 5, 0.03) 2px, 
+      transparent 4px
+    );
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: multiply;
+}
+/* }}} */
+
+/* +++ ATRAMENTUM INK BLEED & CAPILLARY FEATHERING {{{ */
+/* Ink Capillary bleed presets */
+body.ink-bleed-none, .ink-bleed-none {
+  --ink-shadow: none !important;
+}
+
+body.ink-bleed-subtle, .ink-bleed-subtle {
+  --ink-shadow: 0 0 0.25px rgba(20, 14, 8, 0.5) !important;
+}
+
+body.ink-bleed-historical, .ink-bleed-historical {
+  --ink-shadow: 0 0 0.65px rgba(25, 18, 10, 0.65) !important;
+}
+
+body.ink-bleed-heavy, .ink-bleed-heavy {
+  --ink-shadow: 0 0 1.6px rgba(32, 22, 12, 0.85) !important;
+}
+
+/* Applying Ink Bleed */
+.ink-bleed,
+.markdown-source-view.mod-cm6 .cm-line,
+.markdown-rendered p,
+.markdown-rendered li,
+.markdown-rendered blockquote {
+  text-shadow: var(--ink-shadow);
+}
+/* }}} */
+
+/* +++ BULLA SEALS & BRAIDED FASTENING CORDS {{{ */
+.fastening-cord {
+  position: absolute;
+  bottom: 0;
+  left: 36px;
+  width: 5px;
+  height: 95px;
+  background: var(--cord-gradient);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.45);
+  z-index: 15;
+}
+
+.bulla-seal {
+  position: absolute;
+  bottom: 14px;
+  left: 18px;
+  width: 48px;
+  height: 48px;
+  background: radial-gradient(circle at 35% 35%, var(--bulla-terracotta-bright), var(--bulla-terracotta) 60%, var(--bulla-shadow) 100%);
+  border-radius: 46% 54% 52% 48% / 48% 46% 54% 52%;
+  box-shadow: 
+    2px 3px 8px rgba(0, 0, 0, 0.65),
+    inset 1.5px 1.5px 3px rgba(255, 255, 255, 0.25),
+    inset -2.5px -3px 5px rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 16;
+  transform: rotate(-10deg);
+}
+
+.bulla-impression {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px dashed rgba(60, 20, 10, 0.45);
+  box-shadow: 
+    inset 1.5px 1.5px 3px rgba(0, 0, 0, 0.8),
+    inset -1px -1px 2px rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Marcellus', 'Cinzel', serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: rgba(50, 15, 8, 0.85);
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.2);
+  letter-spacing: 0.06em;
+}
+
+/* Note Frontmatter Seal Injection (cssclasses: bulla-seal) */
+.bulla-seal-active .markdown-preview-view .markdown-rendered::before,
+.bulla-seal .markdown-preview-view .markdown-rendered::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 36px;
+  width: 5px;
+  height: 95px;
+  background: var(--cord-gradient);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.45);
+  z-index: 15;
+}
+
+.bulla-seal-active .markdown-preview-view .markdown-rendered::after,
+.bulla-seal .markdown-preview-view .markdown-rendered::after {
+  content: "SPQR";
+  position: absolute;
+  bottom: 14px;
+  left: 18px;
+  width: 46px;
+  height: 46px;
+  background: radial-gradient(circle at 35% 35%, var(--bulla-terracotta-bright), var(--bulla-terracotta) 60%, var(--bulla-shadow) 100%);
+  border-radius: 46% 54% 52% 48% / 48% 46% 54% 52%;
+  box-shadow: 2px 3px 8px rgba(0, 0, 0, 0.65), inset 1.5px 1.5px 3px rgba(255, 255, 255, 0.25), inset -2.5px -3px 5px rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Marcellus', 'Cinzel', serif;
+  font-size: 0.62rem;
+  font-weight: bold;
+  color: rgba(50, 15, 8, 0.9);
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.2);
+  z-index: 16;
+  transform: rotate(-10deg);
+}
+/* }}} */
+
+/* +++ CLASSICAL SCRIPTS & TYPOGRAPHY {{{ */
 body {
-  --font-text-theme: "iA Writer Quattro S";
-  --font-interface-theme: var(--font-text-theme);
-  --font-editor-theme: "iA Writer Mono V";
-  --font-editor: var(--font-text-theme), var(--font-text-override), var(--font-editor-theme);
-  --font-monospace-default: "JetBrains Mono";
+  --font-text-theme: "Cinzel", "Marcellus", "Palatino Linotype", "Palatino", "Book Antiqua", Georgia, serif;
+  --font-interface-theme: "Cinzel", "Marcellus", "Palatino Linotype", "Palatino", serif;
+  --font-editor-theme: "IM Fell English", "Palatino Linotype", "Palatino", Georgia, serif;
+  --font-editor: var(--font-editor-theme), var(--font-text-theme), var(--font-editor-default);
+  --font-monospace-default: "JetBrains Mono", "iA Writer Mono V", monospace;
   --font-monospace: var(--font-monospace-override), var(--font-monospace-theme), var(--font-monospace-default);
-  font-variant-emoji: unicode !important; /* emoji will override numbers and special characters */
-  --metadata-input-font-size: var(--font-small);
-  --bases-table-font-size: var(--font-normal-size);
 
-  --font-normal-size: 1em;
-  --font-small: 0.813em;
-  --font-smaller: 0.688em;
-  --font-smallest: 0.625em;
+  font-variant-emoji: unicode !important;
 
-  --code-size: 0.85em;
-  --code-normal: var(--blue);
+  --font-normal-size: 1.05em;
+  --font-small: 0.85em;
+  --font-smaller: 0.72em;
+  --font-smallest: 0.64em;
 
-  --h1: 1.8em;
-  --h2: 1.55em;
-  --h3: 1.35em;
-  --h4: 1.15em;
+  --h1: 1.85em;
+  --h2: 1.5em;
+  --h3: 1.28em;
+  --h4: 1.12em;
   --h5: 1em;
-  --h6: 0.95em;
+  --h6: 0.9em;
 
-  --h1-weight: 600;
+  --h1-weight: 700;
   --h2-weight: 600;
-  --h3-weight: 550;
+  --h3-weight: 600;
   --h4-weight: 550;
   --h5-weight: 550;
   --h6-weight: 550;
@@ -331,605 +651,520 @@ body {
   --h5-color: var(--text-normal);
   --h6-color: var(--text-normal);
 
-  --normal-weight: 500;
-  --bold-weight: 620;
-  --line-width: 40rem; /* Maximum characters per line */
-  --line-height: 1.5;
-  --max-width: 88%; /* Amount of padding around the text, use 90% for narrower padding */
-  --icon-muted: 0.5;
-  --border-width: 1px;
-  --border-width-alt: 1px;
+  --line-width: 44rem;
+  --line-height: 1.6;
+  --max-width: 88%;
 
   --radius-s: 2px;
-  --radius-m: 5px;
-  --radius-l: 10px;
+  --radius-m: 4px;
+  --radius-l: 8px;
 
-  --input-height: 32px;
-  --header-height: 40px;
-
-  --yellow: #e5b567;
-  --green: #b4d273;
-  --orange: #e87d3e;
-  --purple: #9e86c8;
-  --pink: #b05279;
-  --blue: #6c99bb;
-
-  line-height: var(--line-height);
+  /* Classical Roman Pigments */
+  --yellow: var(--roman-gold-bright);
+  --green: var(--roman-malachite);
+  --orange: var(--bulla-terracotta-bright);
+  --purple: var(--roman-purple);
+  --pink: var(--roman-purple-bright);
+  --blue: var(--roman-lapis);
 }
 
-/* source mode */
-.markdown-source-view {
-  font-family: var(--font-text);
+/* Headings in Classical Monumental Roman Style */
+h1, h2, h3, h4, h5, h6,
+.markdown-rendered h1, .markdown-rendered h2, .markdown-rendered h3,
+.markdown-rendered h4, .markdown-rendered h5, .markdown-rendered h6,
+.cm-header-1, .cm-header-2, .cm-header-3, .cm-header-4 {
+  font-family: 'Cinzel', 'Marcellus', serif;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-shadow: var(--ink-shadow);
 }
 
-/* live preview */
-.markdown-source-view.is-live-preview {
-  font-family: var(--font-editor-theme);
+h1, .cm-header-1 {
+  letter-spacing: 0.12em;
+  border-bottom: 1px solid var(--divider-color);
+  padding-bottom: 0.3em;
+  margin-top: 1.2em;
 }
 
-/* reading mode */
-.markdown-preview-view {
-  font-family: var(--font-text-theme);
+h2, .cm-header-2 {
+  letter-spacing: 0.09em;
+  border-bottom: 1px dashed var(--divider-color);
+  padding-bottom: 0.25em;
+  margin-top: 1em;
 }
 
-/* !! MARKDOWN FORMATTING */
-/* fade formatting tags out */
-.shrink-formatting .CodeMirror-line span.cm-formatting:not(.cm-s-obsidian span.cm-link, .cm-s-obsidian span.cm-hmd-internal-link, .cm-s-obsidian span.cm-url, .cm-s-obsidian span.cm-attribute, .cm-s-obsidian span.cm-quote, span.cm-hashtag.cm-hashtag-begin, .cm-s-obsidian span.cm-formatting-list), /* legacy editor */
-.shrink-formatting .markdown-source-view.mod-cm6 .cm-line span.cm-formatting:not(.cm-s-obsidian span.cm-link, .cm-s-obsidian span.cm-hmd-internal-link, .cm-s-obsidian span.cm-url, .cm-s-obsidian span.cm-attribute, .cm-s-obsidian span.cm-quote, span.cm-hashtag.cm-hashtag-begin, .cm-s-obsidian span.cm-formatting-list) /* CM6 editor */ {
-  color: var(--text-faint);
-  font-size: var(--font-smaller) !important;
+/* 1. Old Roman Cursive (Currens) */
+.script-cursive, .roman-cursive, body.script-cursive-default {
+  font-family: 'IM Fell English', 'Baskerville', cursive, serif !important;
+  font-style: italic !important;
+  transform: skewX(-3deg);
+  line-height: 1.55 !important;
 }
 
-/* increase blockquote height */
-.markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote {
-  padding-top: 7px;
-  padding-bottom: 7px;
+/* 2. Capitalis Monumentalis */
+.script-monumentalis, .roman-monumentalis, body.script-monumentalis-default {
+  font-family: 'Marcellus', 'Cinzel', serif !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.16em !important;
+  line-height: 1.4 !important;
 }
 
-/* !! HIGHLIGHT ACTIVE LINE */
-.active-line-highlight .markdown-source-view .CodeMirror-activeline,
-.active-line-highlight .markdown-source-view.mod-cm6 .cm-active.cm-line {
-  background: var(--background-secondary);
-  border-radius: 8px;
+/* 3. Scriptio Continua (Imperial Capital) */
+.script-capital, .roman-capital {
+  font-family: 'Cinzel', serif !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  line-height: 1.45 !important;
 }
 
-/* !! NUMBERED LISTS IN CALLOUTS */
-.markdown-preview-view .callout ol,
-.markdown-source-view.mod-cm6 .callout ol{
-  padding-inline-start: 0.5em; /* prova 2.0–2.6em */
+/* Interpuncts & Linea Supera */
+.interpunct {
+  font-style: normal;
+  font-weight: 700;
+  margin: 0 0.15em;
+  opacity: 0.85;
 }
 
-/* !! SIDEBAR NOTES */
-/* make sidebar notes' background var(--background-primary) */
-.mod-right-split .markdown-preview-view,
-.mod-left-split .markdown-preview-view,
-.mod-right-split .markdown-source-view.mod-cm6 .cm-scroller,
-.mod-left-split .markdown-source-view.mod-cm6 .cm-scroller {
-  background-color: var(--background-primary);
+.linea-supera {
+  text-decoration: overline;
+}
+
+/* Drop Caps (Initial Capitals) */
+.markdown-rendered p:first-of-type::first-letter {
+  font-family: 'Cinzel', serif;
+  font-size: 2.8em;
+  float: left;
+  line-height: 0.85;
+  margin-right: 0.12em;
+  margin-top: 0.08em;
+  color: var(--color-accent);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
 }
 /* }}} */
 
-/* +++ UI ELEMENTS {{{ */
-
-/* make inline title equal to H1 */
-.inline-title {
-  font-weight: var(--h1-weight);
+/* +++ CALLOUTS & IMPERIAL DECREES {{{ */
+.callout[data-callout="decree"],
+.callout[data-callout="edictum"],
+.callout[data-callout="senatus"],
+.callout[data-callout="epistula"],
+.callout[data-callout="sacrum"],
+.callout[data-callout="legio"] {
+  position: relative;
+  overflow: visible;
+  padding-bottom: 24px;
+  background: var(--papyrus-bg-active);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-radius: 2px 4px 2px 4px;
 }
 
-/* increase space between editor and metadata – credit to Minimal */
-.metadata-container {
-  --input-height: 2rem;
-}
-.markdown-source-view .metadata-container {
-  transform: translateX(-4px);
-}
-.is-phone {
-  --metadata-label-font-size: var(--font-adaptive-smaller);
-  --metadata-input-font-size: var(--font-adaptive-smaller);
-}
-
-/* make cursor accent color */
-.CodeMirror-cursor {
-  background-color: var(--color-accent);
-}
-
-/* make Vim cursor transluscent and accent color */
-.cm-fat-cursor-mark,
-.cm-fat-cursor .CodeMirror-cursor {
-  width: inherit;
-  background-color: var(--vim-cursor) !important;
-}
-
-/* blur background when pop-ups are active 
-   (credit: Deep Work) */
-body .modal {
-  border-radius: 18px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-}
-body .modal .prompt-results {
-  padding: calc((1rem * 2) * 1);
-}
-body .modal-bg {
-  /* backdrop-filter: blur(8px); */ /* causes slowdowns */
-  background-color: rgb(8, 8, 8);
-}
-
-/* make workspace frameless */
-.workspace-tab-header-container,
-.workspace-ribbon.mod-left:before,
-.mod-macos.is-hidden-frameless:not(.is-popout-window)
-  .sidebar-toggle-button.mod-right {
-  background-color: var(--background-primary);
-}
-
-/* remove note-to-note link underline */
-:root body {
-  --link-decoration: none;
-  --link-decoration-hover: none;
-}
-
-/* centered tables, simplified */
-.markdown-rendered {
-	table {
-		width: 100%;
-		th {
-			padding: calc(1em/3) calc(2em/3);
-		}
-		td {
-			padding: calc(1em/6) calc(2em/3);
-		}
-	}
-}
-
-.markdown-source-view .cm-content .cm-table-widget {
-	.table-wrapper {
-		width: 100%;
-		th .table-cell-wrapper {
-			padding: calc(1em/3) calc(2em/3);
-		}
-		td .table-cell-wrapper {
-			padding: calc(1em/6) calc(2em/3);
-		}
-	}
-}
-
-/* h1 and surrounding p margin variables, thanks to FireIsGood#0733 */
-:root h1 {
-  margin: 0;
-}
-.markdown-preview-view div:has(> h1) + div > p {
-  margin-top: 1em;
-}
-.markdown-preview-view div:has(+ div > h1) > p {
-  margin-bottom: 0.33em;
-}
-
-/* FIX: margin-top funkiness present since Obsidian 1.1+ */
-.markdown-source-view table {
-  margin-top: 0;
-}
-
-/* FIX: background color for titlebar buttons on Windows */
-div.titlebar-button-container.mod-right {
-  background-color: var(--background-primary) !important;
-}
-
-/* EDITOR: font-scalable edit-block-button */
-/* add header padding for button if last column is right-aligned */
-.markdown-source-view table th:last-child[align="right"] {
-  padding-right: 2.767527675276753em;
-  padding-left: 0.8324108241082411em; /* balances padding-right */
-}
-/* button attributes */
-.markdown-source-view.mod-cm6 .edit-block-button {
-  opacity: 1;
-  top: 0.3em;
-  right: 0.25em;
+.callout[data-callout="decree"]::after,
+.callout[data-callout="edictum"]::after {
+  content: "AVG";
+  position: absolute;
+  top: -12px;
+  right: 16px;
+  width: 38px;
+  height: 38px;
+  background: radial-gradient(circle at 35% 35%, #b25333, #8c3b24 60%, #3b140b 100%);
+  border-radius: 50%;
+  box-shadow: 2px 3px 6px rgba(0,0,0,0.5), inset 1px 1px 2px rgba(255,255,255,0.2), inset -2px -2px 4px rgba(0,0,0,0.6);
+  display: flex;
   align-items: center;
   justify-content: center;
-}
-.markdown-source-view div.edit-block-button svg {
-  width: 1.2em;
-  height: 1em;
-}
-
-/* !! DARKEN GRAPH VIEW LINS */
-.graph-view.color-line {
-  color: var(--graph-line-color);
+  font-family: 'Marcellus', serif;
+  font-size: 0.55rem;
+  font-weight: bold;
+  color: rgba(60, 20, 10, 0.9);
+  text-shadow: 1px 1px 1px rgba(255,255,255,0.15);
 }
 
-/* !! FOLD INDICATOR SPACING */
-/* prevent overlap with text */
-
-div.cm-fold-indicator {
-  margin-right: 0;
+.callout[data-callout="senatus"]::after {
+  content: "SEN";
+  position: absolute;
+  top: -12px;
+  right: 16px;
+  width: 38px;
+  height: 38px;
+  background: radial-gradient(circle at 35% 35%, #dfb743, #c59b27 60%, #5a420b 100%);
+  border-radius: 50%;
+  box-shadow: 2px 3px 6px rgba(0,0,0,0.5), inset 1px 1px 2px rgba(255,255,255,0.3), inset -2px -2px 4px rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Marcellus', serif;
+  font-size: 0.55rem;
+  font-weight: bold;
+  color: #3b2804;
+  text-shadow: 1px 1px 1px rgba(255,255,255,0.2);
 }
 
-.markdown-source-view.mod-cm6 .cm-fold-indicator .collapse-indicator {
-  padding-right: 4px;
-  right: 0;
+.callout[data-callout="epistula"]::after {
+  content: "LIV";
+  position: absolute;
+  top: -12px;
+  right: 16px;
+  width: 38px;
+  height: 38px;
+  background: radial-gradient(circle at 35% 35%, #b25333, #8c3b24 60%, #3b140b 100%);
+  border-radius: 50%;
+  box-shadow: 2px 3px 6px rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Marcellus', serif;
+  font-size: 0.55rem;
+  font-weight: bold;
+  color: rgba(60, 20, 10, 0.9);
 }
 
-/* !! CUSTOM CHECKBOX ICONS (adapted from Minimal by @kepano) {{{ */
+.callout[data-callout="legio"]::after {
+  content: "LEG";
+  position: absolute;
+  top: -12px;
+  right: 16px;
+  width: 38px;
+  height: 38px;
+  background: radial-gradient(circle at 35% 35%, #a83222, #751a0e 60%, #3b0a04 100%);
+  border-radius: 50%;
+  box-shadow: 2px 3px 6px rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Marcellus', serif;
+  font-size: 0.55rem;
+  font-weight: bold;
+  color: rgba(255, 230, 210, 0.85);
+}
+
+.callout[data-callout="sacrum"]::after {
+  content: "SAC";
+  position: absolute;
+  top: -12px;
+  right: 16px;
+  width: 38px;
+  height: 38px;
+  background: radial-gradient(circle at 35% 35%, #842342, #5a142b 60%, #290511 100%);
+  border-radius: 50%;
+  box-shadow: 2px 3px 6px rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Marcellus', serif;
+  font-size: 0.55rem;
+  font-weight: bold;
+  color: #f7d5de;
+}
+/* }}} */
+
+/* +++ WAX TABLET CHECKBOXES {{{ */
+input[type="checkbox"] {
+  border: 1.5px solid var(--text-muted);
+  border-radius: 2px;
+  background-color: rgba(0, 0, 0, 0.04);
+  transition: all 0.15s ease;
+}
+
+input[type="checkbox"]:checked {
+  background-color: var(--bulla-terracotta);
+  border-color: var(--bulla-terracotta);
+}
+
+/* Custom checkbox icons */
 input[data-task=">"]:checked,
 input[data-task="!"]:checked,
 input[data-task="-"]:checked,
 input[data-task="<"]:checked,
-input[data-task=l]:checked,
 input[data-task="*"]:checked,
-input[data-task=I]:checked,
-input[data-task=p]:checked,
-input[data-task=P]:checked,
-input[data-task=f]:checked,
-input[data-task=l]:checked,
-input[data-task=L]:checked,
-input[data-task=k]:checked,
-input[data-task=u]:checked,
-input[data-task=w]:checked,
-input[data-task=c]:checked,
-input[data-task=C]:checked,
-input[data-task=d]:checked,
-input[data-task=b]:checked,
-input[data-task="+"]:checked,
 li[data-task=">"] > input:checked,
 li[data-task="!"] > input:checked,
 li[data-task="-"] > input:checked,
 li[data-task="<"] > input:checked,
-li[data-task=l] > input:checked,
-li[data-task="*"] > input:checked,
-li[data-task=I] > input:checked,
-li[data-task=l] > input:checked,
-li[data-task=L] > input:checked,
-li[data-task=p] > input:checked,
-li[data-task=P] > input:checked,
-li[data-task=f] > input:checked,
-li[data-task=k] > input:checked,
-li[data-task=u] > input:checked,
-li[data-task=d] > input:checked,
-li[data-task=w] > input:checked,
-li[data-task=c] > input:checked,
-li[data-task=C] > input:checked,
-li[data-task=b] > input:checked,
-li[data-task="+"] > input:checked,
-li[data-task=">"] > p > input:checked,
-li[data-task="!"] > p > input:checked,
-li[data-task="-"] > p > input:checked,
-li[data-task="<"] > p > input:checked,
-li[data-task=l] > p > input:checked,
-li[data-task=L] > p > input:checked,
-li[data-task="*"] > p > input:checked,
-li[data-task=I] > p > input:checked,
-li[data-task=p] > p > input:checked,
-li[data-task=P] > p > input:checked,
-li[data-task=f] > p > input:checked,
-li[data-task=k] > p > input:checked,
-li[data-task=u] > p > input:checked,
-li[data-task=d] > p > input:checked,
-li[data-task=w] > p > input:checked,
-li[data-task=c] > p > input:checked,
-li[data-task=C] > p > input:checked,
-li[data-task="+"] > p > input:checked,
-li[data-task=b] > p > input:checked {
+li[data-task="*"] > input:checked {
   --checkbox-marker-color: transparent;
   border: none;
-  border-radius: 0;
-  background-image: none;
   background-color: currentColor;
   -webkit-mask-size: var(--checkbox-icon);
   -webkit-mask-position: 50% 50%;
 }
 
-/* [>] Forwarded */
-input[data-task=">"]:checked,
-li[data-task=">"] > input:checked,
-li[data-task=">"] > p > input:checked {
-  color: var(--text-faint);
-  transform: rotate(90deg);
-  -webkit-mask-position: 50% 100%;
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath d='M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z' /%3E%3C/svg%3E");
-}
-
-/* [<] Schedule */
-input[data-task="<"]:checked,
-li[data-task="<"] > input:checked,
-li[data-task="<"] > p > input:checked {
-  color: var(--text-faint);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath fill-rule='evenodd' d='M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z' clip-rule='evenodd' /%3E%3C/svg%3E");
-}
-
-/* [?] Question */
-input[data-task="?"]:checked,
-li[data-task="?"] > input:checked,
-li[data-task="?"] > p > input:checked {
-  --checkbox-marker-color: transparent;
-  background-color: var(--color-yellow);
-  border-color: var(--color-yellow);
-  background-position: 50% 50%;
-  background-size: 200% 90%;
-  background-image: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="20" height="20" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"%3E%3Cpath fill="white" fill-rule="evenodd" d="M4.475 5.458c-.284 0-.514-.237-.47-.517C4.28 3.24 5.576 2 7.825 2c2.25 0 3.767 1.36 3.767 3.215c0 1.344-.665 2.288-1.79 2.973c-1.1.659-1.414 1.118-1.414 2.01v.03a.5.5 0 0 1-.5.5h-.77a.5.5 0 0 1-.5-.495l-.003-.2c-.043-1.221.477-2.001 1.645-2.712c1.03-.632 1.397-1.135 1.397-2.028c0-.979-.758-1.698-1.926-1.698c-1.009 0-1.71.529-1.938 1.402c-.066.254-.278.461-.54.461h-.777ZM7.496 14c.622 0 1.095-.474 1.095-1.09c0-.618-.473-1.092-1.095-1.092c-.606 0-1.087.474-1.087 1.091S6.89 14 7.496 14Z"%2F%3E%3C%2Fsvg%3E');
-}
-.theme-dark input[data-task="?"]:checked,
-.theme-dark li[data-task="?"] > input:checked,
-.theme-dark li[data-task="?"] > p > input:checked {
-  background-image: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="20" height="20" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"%3E%3Cpath fill="black" fill-opacity="0.8" fill-rule="evenodd" d="M4.475 5.458c-.284 0-.514-.237-.47-.517C4.28 3.24 5.576 2 7.825 2c2.25 0 3.767 1.36 3.767 3.215c0 1.344-.665 2.288-1.79 2.973c-1.1.659-1.414 1.118-1.414 2.01v.03a.5.5 0 0 1-.5.5h-.77a.5.5 0 0 1-.5-.495l-.003-.2c-.043-1.221.477-2.001 1.645-2.712c1.03-.632 1.397-1.135 1.397-2.028c0-.979-.758-1.698-1.926-1.698c-1.009 0-1.71.529-1.938 1.402c-.066.254-.278.461-.54.461h-.777ZM7.496 14c.622 0 1.095-.474 1.095-1.09c0-.618-.473-1.092-1.095-1.092c-.606 0-1.087.474-1.087 1.091S6.89 14 7.496 14Z"%2F%3E%3C%2Fsvg%3E');
-}
-
-/* [/] Incomplete */
-input[data-task="/"]:checked,
-li[data-task="/"] > input:checked,
-li[data-task="/"] > p > input:checked {
-  background-image: none;
-  background-color: transparent;
-  position: relative;
-  overflow: hidden;
-}
-input[data-task="/"]:checked:after,
-li[data-task="/"] > input:checked:after,
-li[data-task="/"] > p > input:checked:after {
-  top: 0;
-  left: 0;
-  content: " ";
-  display: block;
-  position: absolute;
-  background-color: var(--background-modifier-accent);
-  width: calc(50% - 0.5px);
-  height: 100%;
-  -webkit-mask-image: none;
-}
-
 /* [!] Important */
 input[data-task="!"]:checked,
-li[data-task="!"] > input:checked,
-li[data-task="!"] > p > input:checked {
+li[data-task="!"] > input:checked {
   color: var(--color-orange);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath fill-rule='evenodd' d='M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z' clip-rule='evenodd' /%3E%3C/svg%3E");
-}
-
-/* ["] Quote */
-input[data-task=“]:checked,
-li[data-task=“] > input:checked,
-li[data-task=“] > p > input:checked,
-input[data-task=Q]:checked,
-li[data-task=Q] > input:checked,
-li[data-task=Q] > p > input:checked,
-input[data-task='"']:checked,
-li[data-task='"'] > input:checked,
-li[data-task='"'] > p > input:checked {
-  --checkbox-marker-color: transparent;
-  background-position: 50% 50%;
-  background-color: var(--color-cyan);
-  border-color: var(--color-cyan);
-  background-size: 75%;
-  background-repeat: no-repeat;
-  background-image: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="20" height="20" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"%3E%3Cpath fill="white" d="M6.5 10c-.223 0-.437.034-.65.065c.069-.232.14-.468.254-.68c.114-.308.292-.575.469-.844c.148-.291.409-.488.601-.737c.201-.242.475-.403.692-.604c.213-.21.492-.315.714-.463c.232-.133.434-.28.65-.35l.539-.222l.474-.197l-.485-1.938l-.597.144c-.191.048-.424.104-.689.171c-.271.05-.56.187-.882.312c-.318.142-.686.238-1.028.466c-.344.218-.741.4-1.091.692c-.339.301-.748.562-1.05.945c-.33.358-.656.734-.909 1.162c-.293.408-.492.856-.702 1.299c-.19.443-.343.896-.468 1.336c-.237.882-.343 1.72-.384 2.437c-.034.718-.014 1.315.028 1.747c.015.204.043.402.063.539l.025.168l.026-.006A4.5 4.5 0 1 0 6.5 10zm11 0c-.223 0-.437.034-.65.065c.069-.232.14-.468.254-.68c.114-.308.292-.575.469-.844c.148-.291.409-.488.601-.737c.201-.242.475-.403.692-.604c.213-.21.492-.315.714-.463c.232-.133.434-.28.65-.35l.539-.222l.474-.197l-.485-1.938l-.597.144c-.191.048-.424.104-.689.171c-.271.05-.56.187-.882.312c-.317.143-.686.238-1.028.467c-.344.218-.741.4-1.091.692c-.339.301-.748.562-1.05.944c-.33.358-.656.734-.909 1.162c-.293.408-.492.856-.702 1.299c-.19.443-.343.896-.468 1.336c-.237.882-.343 1.72-.384 2.437c-.034.718-.014 1.315.028 1.747c.015.204.043.402.063.539l.025.168l.026-.006A4.5 4.5 0 1 0 17.5 10z"%2F%3E%3C%2Fsvg%3E');
-}
-.theme-dark input[data-task=“]:checked,
-.theme-dark li[data-task=“] > input:checked,
-.theme-dark li[data-task=“] > p > input:checked,
-.theme-dark input[data-task='"']:checked,
-.theme-dark li[data-task='"'] > input:checked,
-.theme-dark li[data-task='"'] > p > input:checked {
-  background-image: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="20" height="20" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"%3E%3Cpath fill="black" fill-opacity="0.7" d="M6.5 10c-.223 0-.437.034-.65.065c.069-.232.14-.468.254-.68c.114-.308.292-.575.469-.844c.148-.291.409-.488.601-.737c.201-.242.475-.403.692-.604c.213-.21.492-.315.714-.463c.232-.133.434-.28.65-.35l.539-.222l.474-.197l-.485-1.938l-.597.144c-.191.048-.424.104-.689.171c-.271.05-.56.187-.882.312c-.318.142-.686.238-1.028.466c-.344.218-.741.4-1.091.692c-.339.301-.748.562-1.05.945c-.33.358-.656.734-.909 1.162c-.293.408-.492.856-.702 1.299c-.19.443-.343.896-.468 1.336c-.237.882-.343 1.72-.384 2.437c-.034.718-.014 1.315.028 1.747c.015.204.043.402.063.539l.025.168l.026-.006A4.5 4.5 0 1 0 6.5 10zm11 0c-.223 0-.437.034-.65.065c.069-.232.14-.468.254-.68c.114-.308.292-.575.469-.844c.148-.291.409-.488.601-.737c.201-.242.475-.403.692-.604c.213-.21.492-.315.714-.463c.232-.133.434-.28.65-.35l.539-.222l.474-.197l-.485-1.938l-.597.144c-.191.048-.424.104-.689.171c-.271.05-.56.187-.882.312c-.317.143-.686.238-1.028.467c-.344.218-.741.4-1.091.692c-.339.301-.748.562-1.05.944c-.33.358-.656.734-.909 1.162c-.293.408-.492.856-.702 1.299c-.19.443-.343.896-.468 1.336c-.237.882-.343 1.72-.384 2.437c-.034.718-.014 1.315.028 1.747c.015.204.043.402.063.539l.025.168l.026-.006A4.5 4.5 0 1 0 17.5 10z"%2F%3E%3C%2Fsvg%3E');
-}
-
-/* [-] Canceled */
-input[data-task="-"]:checked,
-li[data-task="-"] > input:checked,
-li[data-task="-"] > p > input:checked {
-  color: var(--text-faint);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath fill-rule='evenodd' d='M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z' clip-rule='evenodd' /%3E%3C/svg%3E");
-}
-
-body:not(.tasks) .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task]:is([data-task="-"]),
-body:not(.tasks) .markdown-preview-view ul li[data-task="-"].task-list-item.is-checked,
-body:not(.tasks) li[data-task="-"].task-list-item.is-checked {
-  color: var(--text-faint);
-  text-decoration: line-through solid var(--text-faint) 1px;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath fill-rule='evenodd' d='M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z' clip-rule='evenodd' /%3E%3C/svg%3E");
 }
 
 /* [*] Star */
 input[data-task="*"]:checked,
-li[data-task="*"] > input:checked,
-li[data-task="*"] > p > input:checked {
-  color: var(--color-yellow);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z' /%3E%3C/svg%3E");
+li[data-task="*"] > input:checked {
+  color: var(--roman-gold-bright);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z' /%3E%3C/svg%3E");
 }
 
-/* [l] Location */
-input[data-task=l]:checked,
-li[data-task=l] > input:checked,
-li[data-task=l] > p > input:checked,
-input[data-task=L]:checked,
-li[data-task=L] > input:checked,
-li[data-task=L] > p > input:checked {
-  color: var(--color-red);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath fill-rule='evenodd' d='M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z' clip-rule='evenodd' /%3E%3C/svg%3E");
+/* [-] Cancelled */
+input[data-task="-"]:checked,
+li[data-task="-"] > input:checked {
+  color: var(--text-faint);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath fill-rule='evenodd' d='M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z' clip-rule='evenodd' /%3E%3C/svg%3E");
 }
-
-/* [i] Info */
-input[data-task=i]:checked,
-li[data-task=i] > input:checked,
-li[data-task=i] > p > input:checked {
-  --checkbox-marker-color: transparent;
-  background-color: var(--color-blue);
-  border-color: var(--color-blue);
-  background-position: 50%;
-  background-size: 100%;
-  background-image: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="20" height="20" preserveAspectRatio="xMidYMid meet" viewBox="0 0 512 512"%3E%3Cpath fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="40" d="M196 220h64v172"%2F%3E%3Cpath fill="none" stroke="white" stroke-linecap="round" stroke-miterlimit="10" stroke-width="40" d="M187 396h138"%2F%3E%3Cpath fill="white" d="M256 160a32 32 0 1 1 32-32a32 32 0 0 1-32 32Z"%2F%3E%3C%2Fsvg%3E');
-}
-.theme-dark input[data-task=i]:checked,
-.theme-dark li[data-task=i] > input:checked,
-.theme-dark li[data-task=i] > p > input:checked {
-  background-image: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="20" height="20" preserveAspectRatio="xMidYMid meet" viewBox="0 0 512 512"%3E%3Cpath fill="none" stroke="black" stroke-opacity="0.8" stroke-linecap="round" stroke-linejoin="round" stroke-width="40" d="M196 220h64v172"%2F%3E%3Cpath fill="none" stroke="black" stroke-opacity="0.8" stroke-linecap="round" stroke-miterlimit="10" stroke-width="40" d="M187 396h138"%2F%3E%3Cpath fill="black" fill-opacity="0.8" d="M256 160a32 32 0 1 1 32-32a32 32 0 0 1-32 32Z"%2F%3E%3C%2Fsvg%3E');
-}
-
-/* [S] Amount/savings/money */
-input[data-task=S]:checked,
-li[data-task=S] > input:checked,
-li[data-task=S] > p > input:checked {
-  --checkbox-marker-color: transparent;
-  border-color: var(--color-green);
-  background-color: var(--color-green);
-  background-size: 100%;
-  background-image: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="20" height="20" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48"%3E%3Cpath fill="white" fill-rule="evenodd" d="M26 8a2 2 0 1 0-4 0v2a8 8 0 1 0 0 16v8a4.002 4.002 0 0 1-3.773-2.666a2 2 0 0 0-3.771 1.332A8.003 8.003 0 0 0 22 38v2a2 2 0 1 0 4 0v-2a8 8 0 1 0 0-16v-8a4.002 4.002 0 0 1 3.773 2.666a2 2 0 0 0 3.771-1.332A8.003 8.003 0 0 0 26 10V8Zm-4 6a4 4 0 0 0 0 8v-8Zm4 12v8a4 4 0 0 0 0-8Z" clip-rule="evenodd"%2F%3E%3C%2Fsvg%3E');
-}
-.theme-dark input[data-task=S]:checked,
-.theme-dark li[data-task=S] > input:checked,
-.theme-dark li[data-task=S] > p > input:checked {
-  background-image: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="20" height="20" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48"%3E%3Cpath fill-opacity="0.8" fill="black" fill-rule="evenodd" d="M26 8a2 2 0 1 0-4 0v2a8 8 0 1 0 0 16v8a4.002 4.002 0 0 1-3.773-2.666a2 2 0 0 0-3.771 1.332A8.003 8.003 0 0 0 22 38v2a2 2 0 1 0 4 0v-2a8 8 0 1 0 0-16v-8a4.002 4.002 0 0 1 3.773 2.666a2 2 0 0 0 3.771-1.332A8.003 8.003 0 0 0 26 10V8Zm-4 6a4 4 0 0 0 0 8v-8Zm4 12v8a4 4 0 0 0 0-8Z" clip-rule="evenodd"%2F%3E%3C%2Fsvg%3E');
-}
-
-/* [I] Idea/lightbulb */
-input[data-task=I]:checked,
-li[data-task=I] > input:checked,
-li[data-task=I] > p > input:checked {
-  color: var(--color-yellow);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath d='M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1h4v1a2 2 0 11-4 0zM12 14c.015-.34.208-.646.477-.859a4 4 0 10-4.954 0c.27.213.462.519.476.859h4.002z' /%3E%3C/svg%3E");
-}
-
-/* [f] Fire */
-input[data-task=f]:checked,
-li[data-task=f] > input:checked,
-li[data-task=f] > p > input:checked {
-  color: var(--color-red);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath fill-rule='evenodd' d='M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z' clip-rule='evenodd' /%3E%3C/svg%3E");
-}
-
-/* [k] Key */
-input[data-task=k]:checked,
-li[data-task=k] > input:checked,
-li[data-task=k] > p > input:checked {
-  color: var(--color-yellow);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath fill-rule='evenodd' d='M18 8a6 6 0 01-7.743 5.743L10 14l-1 1-1 1H6v2H2v-4l4.257-4.257A6 6 0 1118 8zm-6-4a1 1 0 100 2 2 2 0 012 2 1 1 0 102 0 4 4 0 00-4-4z' clip-rule='evenodd' /%3E%3C/svg%3E");
-}
-
-/* [u] Up */
-input[data-task=u]:checked,
-li[data-task=u] > input:checked,
-li[data-task=u] > p > input:checked {
-  color: var(--color-green);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath fill-rule='evenodd' d='M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z' clip-rule='evenodd' /%3E%3C/svg%3E");
-}
-
-/* [w] Win */
-input[data-task=w]:checked,
-li[data-task=w] > input:checked,
-li[data-task=w] > p > input:checked {
-  color: var(--color-purple);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath fill-rule='evenodd' d='M6 3a1 1 0 011-1h.01a1 1 0 010 2H7a1 1 0 01-1-1zm2 3a1 1 0 00-2 0v1a2 2 0 00-2 2v1a2 2 0 00-2 2v.683a3.7 3.7 0 011.055.485 1.704 1.704 0 001.89 0 3.704 3.704 0 014.11 0 1.704 1.704 0 001.89 0 3.704 3.704 0 014.11 0 1.704 1.704 0 001.89 0A3.7 3.7 0 0118 12.683V12a2 2 0 00-2-2V9a2 2 0 00-2-2V6a1 1 0 10-2 0v1h-1V6a1 1 0 10-2 0v1H8V6zm10 8.868a3.704 3.704 0 01-4.055-.036 1.704 1.704 0 00-1.89 0 3.704 3.704 0 01-4.11 0 1.704 1.704 0 00-1.89 0A3.704 3.704 0 012 14.868V17a1 1 0 001 1h14a1 1 0 001-1v-2.132zM9 3a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1zm3 0a1 1 0 011-1h.01a1 1 0 110 2H13a1 1 0 01-1-1z' clip-rule='evenodd' /%3E%3C/svg%3E");
-}
-
-/* [d], [D] Doing */
-input[data-task=d]:checked,
-li[data-task=d] > input:checked,
-li[data-task=d] > p > input:checked,
-input[data-task=D]:checked,
-li[data-task=D] > input:checked,
-li[data-task=D] > p > input:checked {
-  color: var(--color-purple);
-  -webkit-mask-image: url('data:image/svg+xml;charset=utf-8,<svg width="18" height="18" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.6337 11.0555L2.14839 19.5407L4.26971 21.6621L12.755 13.1768" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.6337 11.0555L12.0479 9.64124C12.0479 9.64124 12.4015 6.45926 8.86595 2.92373L9.92661 1.86307L18.4119 7.51992L17.3512 8.58058L18.7654 9.99479L19.8261 8.93413L22.301 11.409L17.3512 16.3588L14.8764 13.8839L15.937 12.8232L14.5228 11.409L12.755 13.1768L10.6337 11.0555Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>');
-  padding-bottom: 10px;
-}
-/* [p] Pros */
-input[data-task=p]:checked,
-li[data-task=p] > input:checked,
-li[data-task=p] > p > input:checked,
-input[data-task=P]:checked,
-li[data-task=P] > input:checked,
-li[data-task=P] > p > input:checked {
-  color: var(--color-green);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath d='M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z' /%3E%3C/svg%3E");
-}
-
-/* [c] Cons */
-input[data-task=c]:checked,
-li[data-task=c] > input:checked,
-li[data-task=c] > p > input:checked,
-input[data-task=C]:checked,
-li[data-task=C] > input:checked,
-li[data-task=C] > p > input:checked {
-  color: var(--color-orange);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath d='M18 9.5a1.5 1.5 0 11-3 0v-6a1.5 1.5 0 013 0v6zM14 9.667v-5.43a2 2 0 00-1.105-1.79l-.05-.025A4 4 0 0011.055 2H5.64a2 2 0 00-1.962 1.608l-1.2 6A2 2 0 004.44 12H8v4a2 2 0 002 2 1 1 0 001-1v-.667a4 4 0 01.8-2.4l1.4-1.866a4 4 0 00.8-2.4z' /%3E%3C/svg%3E");
-}
-
-/* [b] Bookmark */
-input[data-task=b]:checked,
-li[data-task=b] > input:checked,
-li[data-task=b] > p > input:checked {
-  color: var(--color-orange);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath d='M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z' /%3E%3C/svg%3E");
-}
-
-/* [+] Add */
-input[data-task="+"]:checked,
-li[data-task="+"] > input:checked,
-li[data-task="+"] > p > input:checked {
-  color: var(--color-red);
-  -webkit-mask-image: url('data:image/svg+xml;charset=utf-8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M3.6 2.25C2.85442 2.25 2.25 2.85441 2.25 3.6V20.4C2.25 21.1456 2.85441 21.75 3.6 21.75H20.4C21.1456 21.75 21.75 21.1456 21.75 20.4V3.6C21.75 2.85442 21.1456 2.25 20.4 2.25H3.6ZM12.75 9C12.75 8.58579 12.4142 8.25 12 8.25C11.5858 8.25 11.25 8.58579 11.25 9V11.25H9C8.58579 11.25 8.25 11.5858 8.25 12C8.25 12.4142 8.58579 12.75 9 12.75H11.25V15C11.25 15.4142 11.5858 15.75 12 15.75C12.4142 15.75 12.75 15.4142 12.75 15V12.75H15C15.4142 12.75 15.75 12.4142 15.75 12C15.75 11.5858 15.4142 11.25 15 11.25H12.75V9Z" fill="currentColor"/></svg>');
-}
-
-/* /1* [B] Brainstorm ~~WIP *1/ */
-/* input[data-task=B]:checked, */
-/* li[data-task=B] > input:checked, */
-/* li[data-task=B] > p > input:checked { */
-/*   color: var(--color-pink); */
-/*   -webkit-mask-image: url('data:image/svg+xml;charset=utf-8,<svg width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 14C5.34315 14 4 15.3431 4 17C4 18.6569 5.34315 20 7 20C7.35064 20 7.68722 19.9398 8 19.8293" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.26392 15.6046C2.9243 14.9582 2.00004 13.587 2.00004 12C2.00004 10.7883 2.53877 9.70251 3.38978 8.96898" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.42053 8.8882C3.1549 8.49109 3 8.01363 3 7.5C3 6.11929 4.11929 5 5.5 5C6.06291 5 6.58237 5.18604 7.00024 5.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.23769 5.56533C7.08524 5.24215 7 4.88103 7 4.5C7 3.11929 8.11929 2 9.5 2C10.8807 2 12 3.11929 12 4.5V20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 20C8 21.1046 8.89543 22 10 22C11.1046 22 12 21.1046 12 20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 7C12 8.65685 13.3431 10 15 10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 14C18.6569 14 20 15.3431 20 17C20 18.6569 18.6569 20 17 20C16.6494 20 16.3128 19.9398 16 19.8293" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M19.7361 15.6046C21.0757 14.9582 22 13.587 22 12C22 10.7883 21.4612 9.70251 20.6102 8.96898" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.5795 8.8882C20.8451 8.49109 21 8.01363 21 7.5C21 6.11929 19.8807 5 18.5 5C17.9371 5 17.4176 5.18604 16.9998 5.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 4.5C12 3.11929 13.1193 2 14.5 2C15.8807 2 17 3.11929 17 4.5C17 4.88103 16.9148 5.24215 16.7623 5.56533" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 20C16 21.1046 15.1046 22 14 22C12.8954 22 12 21.1046 12 20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>'); */
-/* } */
-
 /* }}} */
 
-/* +++ PLUGINS {{{ */
+/* +++ UI COMPONENTS (TABS, SIDEBARS, MODALS, SCROLLBARS) {{{ */
 
-/* ZOOM by @vslinko */
-.zoom-plugin-header {
-  font-family: var(--font-interface-theme);
+/* Horizontal Dividers */
+hr {
+  border: none;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--divider-color) 20%, var(--divider-color) 80%, transparent);
+  position: relative;
+  margin: 2.2em 0;
 }
 
-/* KANBAN by @mgmeyers */
-.kanban-plugin__grow-wrap > textarea {
-  background-color: var(--background-primary);
+hr::after {
+  content: "🏛️";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--background-primary);
+  padding: 0 10px;
+  font-size: 0.9em;
+  color: var(--text-muted);
 }
 
-/* OBSIDIAN TODO by @larslockefeer */
-div.todo-item-view-item span.due-date {
-  background-color: var(--yellow);
-  color: white; /* makes due dates legible */
+/* Antique Cursive Blockquotes */
+blockquote, .markdown-rendered blockquote {
+  font-family: 'IM Fell English', 'Baskerville', cursive, serif;
+  font-style: italic;
+  transform: skewX(-2deg);
+  border-left: 3px solid var(--bulla-terracotta);
+  background: rgba(140, 59, 36, 0.04);
+  padding: 10px 18px;
+  border-radius: 0 4px 4px 0;
+  margin: 1.4em 0;
+  color: var(--text-normal);
+  line-height: 1.6;
 }
 
-div.todo-item-view-item span.due-date.overdue {
-  background-color: var(--orange);
+/* Tabularium Tables */
+.markdown-rendered table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.5em 0;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--divider-color);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-/* make toolbar items more legible */
-div.todo-item-view-item-link svg,
-div.todo-item-view-toolbar-item svg {
-  fill: var(--text-faint);
-}
-/* make focused toolbar item follow the theme accent */
-div.todo-item-view-toolbar-item.active svg {
-  fill: var(--text-accent);
+.markdown-rendered th {
+  font-family: 'Cinzel', serif;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 700;
+  background: rgba(140, 59, 36, 0.1);
+  border-bottom: 2px solid var(--bulla-terracotta);
+  padding: 8px 14px;
 }
 
-/* +++ STYLE SETTINGS by @mgmeyers */
+.markdown-rendered td {
+  border-bottom: 1px solid var(--divider-color);
+  padding: 6px 14px;
+}
 
+/* Inscribed Epigraphic Code Blocks */
+.markdown-rendered pre, .markdown-source-view.mod-cm6 .cm-embed-block:not(.cm-callout) {
+  background-color: var(--code-background);
+  border: 1px solid var(--divider-color);
+  border-radius: 4px;
+  box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.markdown-rendered code {
+  color: var(--code-normal);
+  background-color: rgba(140, 59, 36, 0.08);
+  padding: 0.15em 0.35em;
+  border-radius: 3px;
+  font-family: var(--font-monospace);
+  font-size: 0.9em;
+}
+
+/* Tituli & Tags as Roman Clay Bullae / Papyrus Slips */
+.tag, a.tag {
+  background-color: rgba(140, 59, 36, 0.12);
+  color: var(--text-accent) !important;
+  border: 1px solid rgba(140, 59, 36, 0.25);
+  font-family: 'Cinzel', serif;
+  font-size: 0.75em;
+  letter-spacing: 0.05em;
+  padding: 2px 8px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.tag:hover, a.tag:hover {
+  background-color: var(--bulla-terracotta);
+  color: #fff !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Scrollbars Styled as Ancient Reed Stalks */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-bg);
+  border-radius: 4px;
+  border: 2px solid var(--scrollbar-bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-active-thumb-bg);
+}
+
+/* Modals styled like Stone Inscription Tablets */
+body .modal {
+  background: var(--background-primary) !important;
+  border: 1px solid var(--divider-color) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45) !important;
+  border-radius: 6px !important;
+}
+
+body .modal-bg {
+  background-color: rgba(15, 12, 10, 0.7) !important;
+}
+
+/* Active Line Highlight */
+.active-line-highlight .markdown-source-view.mod-cm6 .cm-active.cm-line {
+  background: rgba(197, 155, 39, 0.12) !important;
+  border-radius: 3px;
+}
+
+/* Fade formatting tags */
+.shrink-formatting .cm-formatting {
+  color: var(--text-faint) !important;
+  font-size: var(--font-smaller) !important;
+}
+/* }}} */
+
+/* +++ STYLE SETTINGS CONFIGURATION {{{ */
 /* @settings
 
-name: Typewriter
-id: obsidian-typewriter
+name: Roman Papyrus
+id: obsidian-roman-papyrus
 settings:
     -
-        id: typewriter-editor
-        title: Editor
+        id: papyrus-grade-heading
+        title: Pliny's Six Papyrus Grades (Naturalis Historia XIII.74–82)
+        type: heading
+        level: 1
+    -
+        id: default-papyrus-grade
+        title: Default Papyrus Grade
+        description: Choose the historical quality grade described by Pliny the Elder and Isidore
+        type: class-select
+        default: grade-augusta
+        options:
+            -
+                label: I. Augusta — 13 Digits (Superfine Imperial White Pith)
+                value: grade-augusta
+            -
+                label: II. Liviana — 12 Digits (Golden Ivory, Empress Livia's Grade)
+                value: grade-liviana
+            -
+                label: III. Hieratica / Fanniana — 9 Digits (Thin Priestly & Literary Parchment)
+                value: grade-hieratica
+            -
+                label: IV. Saitica — 7-8 Digits (Provincial Delta Knotty Amber)
+                value: grade-saitica
+            -
+                label: V. Taeneotica — 6 Digits (Coarse Outer Bark, Sold by Bulk Weight)
+                value: grade-taeneotica
+            -
+                label: VI. Emporetica — <6 Digits (Merchant Wrapping Scrap)
+                value: grade-emporetica
+    -
+        id: papyrus-layout-heading
+        title: Document Architecture & Scroll Mode
+        type: heading
+        level: 2
+    -
+        id: papyrus-document-layout
+        title: Document Display Mode
+        description: Choose between Plagula (card sheet on desk) or Volumen (continuous joined scroll)
+        type: class-select
+        default: papyrus-mode-plagula
+        options:
+            -
+                label: Plagula (Bounded Papyrus Sheet with Deckle Edge Shadows)
+                value: papyrus-mode-plagula
+            -
+                label: Volumen (Continuous Unrolled Scroll Roll with Kollesis Seams)
+                value: papyrus-mode-volumen
+            -
+                label: Modern Full Width (Standard Obsidian Editor Layout)
+                value: papyrus-mode-standard
+    -
+        id: papyrus-fibers-on
+        title: Recto & Verso Fiber Weave Layering
+        description: Overlays cross-grained Egyptian cyperus pith striations
+        type: class-toggle
+        default: on
+    -
+        id: papyrus-kollesis-seams
+        title: Kollesis Glue Seams
+        description: Display the historical joined plagulae overlap seam
+        type: class-toggle
+        default: on
+    -
+        id: bulla-seal-active
+        title: Stamped Bulla Seals
+        description: Display terracotta bulla seal and fastening cord
+        type: class-toggle
+        default: on
+    -
+        id: papyrus-ink-physics-heading
+        title: Atramentum Ink Physics
+        type: heading
+        level: 2
+    -
+        id: ink-capillary-bleed
+        title: Scribe Atramentum Bleed & Feathering
+        description: Simulates the natural capillary diffusion of reed pen gall ink on porous cyperus pith
+        type: class-select
+        default: ink-bleed-historical
+        options:
+            -
+                label: Historical Calibration (Authentic Reed Ink Feathering)
+                value: ink-bleed-historical
+            -
+                label: Subtle Micro-Bleed (Very Light)
+                value: ink-bleed-subtle
+            -
+                label: Porous / Heavy Bleed (Coarse Paper Running)
+                value: ink-bleed-heavy
+            -
+                label: Crisp Modern (No Bleed)
+                value: ink-bleed-none
+    -
+        id: typography-heading
+        title: Classical Roman Typography & Epigraphy
         type: heading
         level: 2
     -
         id: shrink-formatting
-        title: Shrink & fade Markdown formatting symbols
+        title: Fade & shrink Markdown formatting symbols
         type: class-toggle
         default: on
     -
         id: active-line-highlight
-        title: Highlight the active line
+        title: Highlight active line in amber wash
         type: class-toggle
         default: on
 */
