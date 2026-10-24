@@ -1,6 +1,6 @@
 /* -------- FRONT MATTER ---------
 ** Theme: Roman Papyrus (Charta Papyracea Romana)
-** Version number: 1.0.0
+** Version number: 1.0.1
 ** GitHub Repo: https://github.com/gavmor/obsidian-roman-papyrus-theme
 ** Original template by: crashmoney (Obsidian Typewriter)
 ** Roman Papyrus enhancements by: gavmor
@@ -15,8 +15,7 @@
 |_ LIGHT THEME (IMPERIAL ATRIUM & PAPYRUS DESK)
 |_ DARK THEME (CANDLELIT TABLINUM & HERCULANEUM SCROLLS)
 |_ PLINY'S SIX HISTORICAL GRADES (CSS CLASSES & TOKENS)
-|_ DOCUMENT LAYOUT ARCHITECTURE (PLAGULA SHEETS & VOLUMEN ROLLS)
-|_ FIBER WEAVE LAYERING (RECTO & VERSO PITH STRIPS)
+|_ DOCUMENT LAYOUT ARCHITECTURE (OPAQUE SCROLLER & PLAGULA SHEETS)
 |_ KOLLESIS (GLUED SEAMS BETWEEN PLAGULA SHEETS)
 |_ ATRAMENTUM INK BLEED & CAPILLARY FEATHERING
 |_ BULLA SEALS & BRAIDED FASTENING CORDS
@@ -116,13 +115,8 @@
   --roman-lapis: #264e70;
   --roman-bistre: #2d2015;
 
-  /* Standard Ink Bleed blur radius */
-  --ink-shadow-blur: 0.35px;
-  --ink-shadow: 0 0 var(--ink-shadow-blur) rgba(20, 14, 8, 0.6);
-
-  /* SVG displacement filters data URIs for ragged edge and reed fiber capillary distortion */
-  --filter-papyrus-tear: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='papyrus-tear-filter' x='-10%25' y='-10%25' width='120%25' height='120%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.045 0.08' numOctaves='4' result='noise'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='noise' scale='6' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3C/svg%3E#papyrus-tear-filter");
-  --filter-ink-capillary: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='ink-capillary-filter' x='-10%25' y='-10%25' width='120%25' height='120%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.05 0.15' numOctaves='3' result='fiberNoise'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='fiberNoise' scale='1.2' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3C/svg%3E#ink-capillary-filter");
+  /* Standard Ink Bleed (disabled by default to ensure maximum crispness and zero redraw artifacts) */
+  --ink-shadow: none;
 
   /* 1. AUGUSTA: 13 Digiti (~240mm), Fine, White, Polished Ivory Pith */
   --bg-grade-augusta: 
@@ -293,7 +287,6 @@ body {
   --scrollbar-active-thumb-bg: #5c4735;
   --scrollbar-bg: rgba(70, 45, 20, 0.08);
   --scrollbar-thumb-bg: #826c58;
-  --highlight-mix-blend-mode: multiply;
 
   --icon-color: var(--text-muted);
   --icon-hex: 3b2a1a;
@@ -345,7 +338,6 @@ body {
   --scrollbar-active-thumb-bg: #8c735a;
   --scrollbar-bg: #1d1a16;
   --scrollbar-thumb-bg: #544434;
-  --highlight-mix-blend-mode: screen;
 
   --icon-color: var(--text-muted);
   --icon-hex: dcd2c3;
@@ -363,7 +355,6 @@ body {
 body.grade-augusta, .grade-augusta {
   --papyrus-bg-active: var(--bg-grade-augusta) !important;
   --papyrus-ink-active: var(--ink-augusta) !important;
-  --ink-shadow: 0 0 0.25px rgba(20, 14, 8, 0.55) !important;
   --papyrus-sheet-width: 240mm !important;
 }
 
@@ -371,7 +362,6 @@ body.grade-augusta, .grade-augusta {
 body.grade-liviana, .grade-liviana {
   --papyrus-bg-active: var(--bg-grade-liviana) !important;
   --papyrus-ink-active: var(--ink-liviana) !important;
-  --ink-shadow: 0 0 0.4px rgba(22, 16, 9, 0.6) !important;
   --papyrus-sheet-width: 220mm !important;
 }
 
@@ -379,7 +369,6 @@ body.grade-liviana, .grade-liviana {
 body.grade-hieratica, .grade-hieratica {
   --papyrus-bg-active: var(--bg-grade-hieratica) !important;
   --papyrus-ink-active: var(--ink-hieratica) !important;
-  --ink-shadow: 0 0 0.65px rgba(25, 18, 10, 0.65) !important;
   --papyrus-sheet-width: 165mm !important;
 }
 
@@ -387,7 +376,6 @@ body.grade-hieratica, .grade-hieratica {
 body.grade-saitica, .grade-saitica {
   --papyrus-bg-active: var(--bg-grade-saitica) !important;
   --papyrus-ink-active: var(--ink-saitica) !important;
-  --ink-shadow: 0 0 1.05px rgba(28, 20, 11, 0.72) !important;
   --papyrus-sheet-width: 140mm !important;
 }
 
@@ -395,7 +383,6 @@ body.grade-saitica, .grade-saitica {
 body.grade-taeneotica, .grade-taeneotica {
   --papyrus-bg-active: var(--bg-grade-taeneotica) !important;
   --papyrus-ink-active: var(--ink-taeneotica) !important;
-  --ink-shadow: 0 0 1.55px rgba(32, 22, 12, 0.8) !important;
   --papyrus-sheet-width: 110mm !important;
 }
 
@@ -403,24 +390,35 @@ body.grade-taeneotica, .grade-taeneotica {
 body.grade-emporetica, .grade-emporetica {
   --papyrus-bg-active: var(--bg-grade-emporetica) !important;
   --papyrus-ink-active: var(--ink-emporetica) !important;
-  --ink-shadow: 0 0 2.2px rgba(35, 24, 12, 0.95) !important;
   --papyrus-sheet-width: 100mm !important;
 }
 /* }}} */
 
-/* +++ DOCUMENT LAYOUT ARCHITECTURE (PLAGULA SHEETS & VOLUMEN ROLLS) {{{ */
+/* +++ DOCUMENT LAYOUT ARCHITECTURE (OPAQUE SCROLLER & PLAGULA SHEETS) {{{ */
+
+/* Ensure the workspace view and scroll viewport ALWAYS have solid opaque backgrounds.
+   CRITICAL: Setting background: transparent on .cm-scroller breaks Chromium/Electron tile clearing,
+   which causes permanent drawn pixel ghosting and scroll trails! */
+
+.workspace-leaf-content[data-type="markdown"] .view-content {
+  background-color: var(--background-primary) !important;
+}
+
+.markdown-source-view.mod-cm6 .cm-scroller,
+.markdown-preview-view {
+  background: var(--background-primary) !important;
+  background-color: var(--background-primary) !important;
+}
 
 /* 1. PLAGULA MODE (Bounded Papyrus Sheet on Roman Desk) */
+body.papyrus-mode-plagula .workspace-leaf-content[data-type="markdown"] .view-content,
+.plagula .workspace-leaf-content[data-type="markdown"] .view-content,
 body.papyrus-mode-plagula .markdown-source-view.mod-cm6 .cm-scroller,
 body.papyrus-mode-plagula .markdown-preview-view,
 .plagula .markdown-source-view.mod-cm6 .cm-scroller,
 .plagula .markdown-preview-view {
-  background: transparent !important;
-}
-
-body.papyrus-mode-plagula .workspace-leaf-content[data-type="markdown"] .view-content,
-.plagula .workspace-leaf-content[data-type="markdown"] .view-content {
   background: var(--background-secondary) !important;
+  background-color: var(--background-secondary) !important;
 }
 
 body.papyrus-mode-plagula .markdown-source-view.mod-cm6 .cm-sizer,
@@ -431,22 +429,25 @@ body.papyrus-mode-plagula .markdown-preview-view .markdown-rendered,
   max-width: var(--papyrus-sheet-width, 240mm) !important;
   margin: 28px auto !important;
   padding: 38px 52px !important;
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.25) !important;
-  border-radius: 2px 4px 3px 5px / 4px 2px 5px 3px !important;
-  position: relative !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18), 0 1px 4px rgba(0, 0, 0, 0.12) !important;
+  border-radius: 4px !important;
   border: 1px solid rgba(80, 50, 20, 0.14) !important;
+  position: relative !important;
+  isolation: isolate;
   transition: max-width 0.3s ease, background 0.3s ease;
 }
 
-/* Ragged Deckle Edge Effect via drop-shadow and border-radius */
-.papyrus-wrapper,
-body.papyrus-deckle-edges .markdown-source-view.mod-cm6 .cm-sizer,
-body.papyrus-deckle-edges .markdown-preview-view .markdown-rendered {
-  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.55));
-  border-radius: 4px 2px 5px 3px / 2px 5px 3px 4px;
+/* 2. VOLUMEN MODE (Continuous Scroll Roll with Wooden Umbilicus Rod Margins) */
+body.papyrus-mode-volumen .workspace-leaf-content[data-type="markdown"] .view-content,
+.volumen .workspace-leaf-content[data-type="markdown"] .view-content,
+body.papyrus-mode-volumen .markdown-source-view.mod-cm6 .cm-scroller,
+body.papyrus-mode-volumen .markdown-preview-view,
+.volumen .markdown-source-view.mod-cm6 .cm-scroller,
+.volumen .markdown-preview-view {
+  background: var(--background-secondary) !important;
+  background-color: var(--background-secondary) !important;
 }
 
-/* 2. VOLUMEN MODE (Continuous Scroll Roll with Wooden Umbilicus Rod Margins) */
 body.papyrus-mode-volumen .markdown-source-view.mod-cm6 .cm-sizer,
 body.papyrus-mode-volumen .markdown-preview-view .markdown-rendered,
 .volumen .markdown-source-view.mod-cm6 .cm-sizer,
@@ -454,10 +455,18 @@ body.papyrus-mode-volumen .markdown-preview-view .markdown-rendered,
   background: var(--papyrus-bg-active) !important;
   border-left: 14px solid #4a3622 !important;
   border-right: 14px solid #4a3622 !important;
-  box-shadow: inset 12px 0 24px rgba(0, 0, 0, 0.4), inset -12px 0 24px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: inset 12px 0 24px rgba(0, 0, 0, 0.25), inset -12px 0 24px rgba(0, 0, 0, 0.25) !important;
   padding-left: 48px !important;
   padding-right: 48px !important;
   position: relative !important;
+}
+
+/* 3. STANDARD MODERN FULL WIDTH */
+body.papyrus-mode-standard .workspace-leaf-content[data-type="markdown"] .view-content,
+body.papyrus-mode-standard .markdown-source-view.mod-cm6 .cm-scroller,
+body.papyrus-mode-standard .markdown-preview-view {
+  background: var(--background-primary) !important;
+  background-color: var(--background-primary) !important;
 }
 
 /* Kollesis (glued seam) overlay on note sheets */
@@ -474,51 +483,25 @@ body.papyrus-kollesis-seams .markdown-source-view.mod-cm6 .cm-sizer::after {
 }
 /* }}} */
 
-/* +++ FIBER WEAVE LAYERING (RECTO & VERSO PITH STRIPS) {{{ */
-body.papyrus-fibers-on .markdown-source-view.mod-cm6 .cm-sizer::before,
-body.papyrus-fibers-on .markdown-preview-view .markdown-rendered::before,
-.papyrus-fibers::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: 
-    repeating-linear-gradient(0deg, 
-      rgba(255, 255, 255, 0.04) 0px, 
-      transparent 1.5px, 
-      rgba(60, 30, 10, 0.05) 3px
-    ),
-    repeating-linear-gradient(90deg, 
-      transparent 0px, 
-      rgba(40, 20, 5, 0.03) 2px, 
-      transparent 4px
-    );
-  pointer-events: none;
-  z-index: 1;
-  mix-blend-mode: multiply;
-}
-/* }}} */
-
 /* +++ ATRAMENTUM INK BLEED & CAPILLARY FEATHERING {{{ */
-/* Ink Capillary bleed presets */
 body.ink-bleed-none, .ink-bleed-none {
   --ink-shadow: none !important;
 }
 
 body.ink-bleed-subtle, .ink-bleed-subtle {
-  --ink-shadow: 0 0 0.25px rgba(20, 14, 8, 0.5) !important;
+  --ink-shadow: 0 0 0.25px rgba(20, 14, 8, 0.45) !important;
 }
 
 body.ink-bleed-historical, .ink-bleed-historical {
-  --ink-shadow: 0 0 0.65px rgba(25, 18, 10, 0.65) !important;
+  --ink-shadow: 0 0 0.5px rgba(25, 18, 10, 0.55) !important;
 }
 
 body.ink-bleed-heavy, .ink-bleed-heavy {
-  --ink-shadow: 0 0 1.6px rgba(32, 22, 12, 0.85) !important;
+  --ink-shadow: 0 0 1.2px rgba(32, 22, 12, 0.75) !important;
 }
 
 /* Applying Ink Bleed */
 .ink-bleed,
-.markdown-source-view.mod-cm6 .cm-line,
 .markdown-rendered p,
 .markdown-rendered li,
 .markdown-rendered blockquote {
@@ -577,7 +560,6 @@ body.ink-bleed-heavy, .ink-bleed-heavy {
 }
 
 /* Note Frontmatter Seal Injection (cssclasses: bulla-seal) */
-.bulla-seal-active .markdown-preview-view .markdown-rendered::before,
 .bulla-seal .markdown-preview-view .markdown-rendered::before {
   content: "";
   position: absolute;
@@ -590,7 +572,6 @@ body.ink-bleed-heavy, .ink-bleed-heavy {
   z-index: 15;
 }
 
-.bulla-seal-active .markdown-preview-view .markdown-rendered::after,
 .bulla-seal .markdown-preview-view .markdown-rendered::after {
   content: "SPQR";
   position: absolute;
@@ -676,7 +657,6 @@ h1, h2, h3, h4, h5, h6,
   font-family: 'Cinzel', 'Marcellus', serif;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  text-shadow: var(--ink-shadow);
 }
 
 h1, .cm-header-1 {
@@ -753,7 +733,7 @@ h2, .cm-header-2 {
   overflow: visible;
   padding-bottom: 24px;
   background: var(--papyrus-bg-active);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   border-radius: 2px 4px 2px 4px;
 }
 
@@ -1097,35 +1077,23 @@ settings:
     -
         id: papyrus-document-layout
         title: Document Display Mode
-        description: Choose between Plagula (card sheet on desk) or Volumen (continuous joined scroll)
+        description: Choose between Modern Full Width or Plagula (card sheet on desk) or Volumen (continuous joined scroll)
         type: class-select
-        default: papyrus-mode-plagula
+        default: papyrus-mode-standard
         options:
             -
-                label: Plagula (Bounded Papyrus Sheet with Deckle Edge Shadows)
+                label: Modern Full Width (Full Papyrus Workspace)
+                value: papyrus-mode-standard
+            -
+                label: Plagula (Bounded Papyrus Sheet on Roman Desk)
                 value: papyrus-mode-plagula
             -
                 label: Volumen (Continuous Unrolled Scroll Roll with Kollesis Seams)
                 value: papyrus-mode-volumen
-            -
-                label: Modern Full Width (Standard Obsidian Editor Layout)
-                value: papyrus-mode-standard
-    -
-        id: papyrus-fibers-on
-        title: Recto & Verso Fiber Weave Layering
-        description: Overlays cross-grained Egyptian cyperus pith striations
-        type: class-toggle
-        default: on
     -
         id: papyrus-kollesis-seams
         title: Kollesis Glue Seams
         description: Display the historical joined plagulae overlap seam
-        type: class-toggle
-        default: on
-    -
-        id: bulla-seal-active
-        title: Stamped Bulla Seals
-        description: Display terracotta bulla seal and fastening cord
         type: class-toggle
         default: on
     -
@@ -1138,20 +1106,20 @@ settings:
         title: Scribe Atramentum Bleed & Feathering
         description: Simulates the natural capillary diffusion of reed pen gall ink on porous cyperus pith
         type: class-select
-        default: ink-bleed-historical
+        default: ink-bleed-none
         options:
             -
-                label: Historical Calibration (Authentic Reed Ink Feathering)
-                value: ink-bleed-historical
+                label: Crisp Modern (No Bleed)
+                value: ink-bleed-none
             -
                 label: Subtle Micro-Bleed (Very Light)
                 value: ink-bleed-subtle
             -
+                label: Historical Calibration (Authentic Reed Ink Feathering)
+                value: ink-bleed-historical
+            -
                 label: Porous / Heavy Bleed (Coarse Paper Running)
                 value: ink-bleed-heavy
-            -
-                label: Crisp Modern (No Bleed)
-                value: ink-bleed-none
     -
         id: typography-heading
         title: Classical Roman Typography & Epigraphy
